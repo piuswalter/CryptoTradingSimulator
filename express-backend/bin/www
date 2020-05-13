@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '6969');   // Changed, so we can run express and react in parallel
+var port = normalizePort(process.env.PORT || '8080');   // Changed, so we can run express and react in parallel
 app.set('port', port);
 
 /**
