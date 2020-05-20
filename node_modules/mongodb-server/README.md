@@ -1,0 +1,16 @@
+# Intro
+
+Node wrapper for Mongodb
+
+# Install
+
+    npm install -g mongodb-server
+
+# Use
+
+    mongod --dbpath path/to/db
+
+# Using via node
+
+The package exports a `path` string that contains the path to the
+mongodb-server binary/executable.

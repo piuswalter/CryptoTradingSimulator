@@ -1,0 +1,28 @@
+var spawn = require('child_process').spawn,
+    fs    = require('fs'),
+    wd    = __dirname + '/../..',
+    args  = process.argv.slice(2),
+    mongod = spawn(__dirname + '/mongod' , args),
+    ok    = false,
+    out   = fs.createWriteStream(wd + '/logs/mongodb.out', {flags:'a'}),
+    err   = fs.createWriteStream(wd + '/logs/mongodb.err', {flags:'a'});    
+
+mongod.stderr.on('data', function(data){
+    if(/^execvp\(\)/.test(data)){
+        console.log('failed to start mongodb')
+    }
+    else if(!ok){
+        ok = true;
+        console.log('mongod started.');
+        console.log('log files are at ' + wd + '/logs/');
+    }
+});    
+
+mongod.stdout.pipe(out);
+mongod.stderr.pipe(err);
+
+process.on('SIGTERM', function(){
+    console.log('mongod is being stopped')
+    mongod.kill("SIGTERM");
+    process.exit(1);
+})
