@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "jest"
   },
   "keywords": [
     "node.js",
@@ -14,15 +15,22 @@
   ],
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "latest",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.14",
+    "mongod": "^2.0.0",
+    "mongodb": "^3.5.7",
+    "mongodb-memory-server-core": "^6.6.0",
+    "mongodb-server": "^1.0.0",
+    "mongoose": "^5.9.15",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11",
-    "body-parser": "latest"
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1"
   }
 }

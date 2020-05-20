@@ -13,10 +13,10 @@ function link(ast) {
   var extendsNode = null;
   if (ast.nodes.length) {
     var hasExtends = ast.nodes[0].type === 'Extends';
+    checkExtendPosition(ast, hasExtends);
     if (hasExtends) {
       extendsNode = ast.nodes.shift();
     }
-    checkExtendPosition(ast, hasExtends);
   }
   ast = applyIncludes(ast);
   ast.declaredBlocks = findDeclaredBlocks(ast);
@@ -55,6 +55,7 @@ function link(ast) {
       parent.declaredBlocks[name] = ast.declaredBlocks[name];
     });
     parent.nodes = mixins.concat(parent.nodes);
+    parent.hasExtends = true;
     return parent;
   }
   return ast;
@@ -76,9 +77,8 @@ function flattenParentBlocks(parentBlocks, accumulator) {
   parentBlocks.forEach(function (parentBlock) {
     if (parentBlock.parents) {
       flattenParentBlocks(parentBlock.parents, accumulator);
-    } else {
-      accumulator.push(parentBlock);
     }
+    accumulator.push(parentBlock);
   });
   return accumulator;
 }
@@ -123,7 +123,21 @@ function applyIncludes(ast, child) {
     }
   }, function after(node, replace) {
     if (node.type === 'Include') {
-      replace(applyYield(link(node.file.ast), node.block));
+      var childAST = link(node.file.ast);
+      if (childAST.hasExtends) {
+        childAST = removeBlocks(childAST);
+      }
+      replace(applyYield(childAST, node.block));
+    }
+  });
+}
+function removeBlocks(ast) {
+  return walk(ast, function (node, replace) {
+    if (node.type === 'NamedBlock') {
+      replace({
+        type: 'Block',
+        nodes: node.nodes
+      });
     }
   });
 }
@@ -164,7 +178,7 @@ function checkExtendPosition(ast, hasExtends) {
       if (hasExtends && !legitExtendsReached) {
         legitExtendsReached = true;
       } else {
-        error('EXTENDS_NOT_FIRST', 'Declaration of template inheritance ("extends") should be the first thing in the file.', node);
+        error('EXTENDS_NOT_FIRST', 'Declaration of template inheritance ("extends") should be the first thing in the file. There can only be one extends statement per file.', node);
       }
     }
   });

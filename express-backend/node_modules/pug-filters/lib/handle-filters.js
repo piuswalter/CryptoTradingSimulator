@@ -19,13 +19,13 @@ function handleFilters(ast, filters, options, filterAliases) {
       node.type = 'Text';
       node.val = filterWithFallback(node, text, attrs);
     } else if (node.type === 'RawInclude' && node.filters.length) {
-      var firstFilter = node.filters.shift();
+      var firstFilter = node.filters.pop();
       var attrs = getAttributes(firstFilter, options);
       var filename = attrs.filename = node.file.fullPath;
       var str = node.file.str;
       node.type = 'Text';
       node.val = filterFileWithFallback(firstFilter, filename, str, attrs);
-      node.filters.forEach(function (filter) {
+      node.filters.slice().reverse().forEach(function (filter) {
         var attrs = getAttributes(filter, options);
         attrs.filename = filename;
         node.val = filterWithFallback(filter, node.val, attrs);
@@ -94,7 +94,7 @@ function getAttributes(node, options) {
   var attrs = {};
   node.attrs.forEach(function (attr) {
     try {
-      attrs[attr.name] = constantinople.toConstant(attr.val);
+      attrs[attr.name] = attr.val === true ? true : constantinople.toConstant(attr.val);
     } catch (ex) {
       if (/not constant/.test(ex.message)) {
         throw error('FILTER_OPTION_NOT_CONSTANT', ex.message + ' All filters are rendered compile-time so filter options must be constants.', node);
