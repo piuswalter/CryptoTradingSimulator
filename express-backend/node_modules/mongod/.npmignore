@@ -1,7 +1,0 @@
-node_modules
-coverage
-out
-data
-.DS_Store
-*.conf
-*.log

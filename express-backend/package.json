@@ -28,7 +28,8 @@
     "mongodb-server": "^1.0.0",
     "mongoose": "^5.9.15",
     "morgan": "~1.9.1",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "babel-jest": "^24.9.0"
   },
   "devDependencies": {
     "jest": "^26.0.1"
