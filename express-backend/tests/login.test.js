@@ -1,5 +1,5 @@
-const request = require('supertest')
-const app = require('../server')
+const request = require('supertest');
+const app = require('../app');
 
 describe('API POST tests', () => {
 	it('POST test for login with user tester1', async done => {
