@@ -70,6 +70,8 @@ app.post(
 
 app.post("/auth/login", controller.login);
 
+app.post("/auth/deleteUser", controller.deleteUser);
+
 
 
 

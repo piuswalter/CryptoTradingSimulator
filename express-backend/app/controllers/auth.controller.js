@@ -66,3 +66,10 @@ exports.login = (req, res) => {
             });
         });
 };
+
+exports.deleteTestUser = (req, res) => {
+    User.deleteOne({
+        username: "registrar1"
+    }, (err) => {})
+};
+

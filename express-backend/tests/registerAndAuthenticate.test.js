@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const controller = require("../app/controllers/auth.controller");
 
 describe('API POST tests', () => {
     it('POST test for registering registrar1', async done => {
@@ -14,7 +15,7 @@ describe('API POST tests', () => {
         expect(res.body.message).toEqual('User was registered successfully!');
         done()
     });
-    let accessToken = "";
+
     it('POST test for login with user registrar1', async done => {
         const res = await request(app)
             .post('/auth/login')
@@ -30,15 +31,11 @@ describe('API POST tests', () => {
         done()
     });
 
-    it('GET test for retrieving user data', async done => {
-        const res = await request(app)
-            .get('/data/test/user')
-            .set({ "x-access-token" : accessToken});
-        expect(res.statusCode).toEqual(200);
-        // The response needs to be verified:
-        // expect(res.body.message).toEqual('User content.')
-        done()
-    });
-
-
 });
+
+afterAll(() => {
+    controller.deleteTestUser({"username": "registrar1"}, {"message": "User content."})
+});
+
+
+
