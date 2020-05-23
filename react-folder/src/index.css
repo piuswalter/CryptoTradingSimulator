@@ -6,10 +6,30 @@ body {
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(20, 20, 29);
+  background-color: #061125;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.top-bar {
+  height: 8vh;
+}
+
+.main-content {
+  height: 92vh;
+}
+
+#h1 {
+  font-size: 47px;
+}
+
+#h2 {
+  font-size: 30px;
+}
+
+#h3 {
+  font-size: 25px;
 }

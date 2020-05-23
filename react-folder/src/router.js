@@ -1,9 +1,9 @@
+//Modules
 import React from "react";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import LandingPage from "./pages/landingPage/LandingPage";
-import Login from "./pages/login/Login";
-import Dashboard from "./pages/dashboard/Dashboard";
-import NotFound from "./pages/notFound/NotFound";
+
+//Pages
+import { LandingPage, Login, Dashboard, NotFound } from './pages';
 
 export default
     <Router>
