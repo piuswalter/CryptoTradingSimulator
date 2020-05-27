@@ -1,5 +1,5 @@
-import React, { Component, setShow } from 'react';
-import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert, Modal } from 'react-bootstrap';
 import AuthService from '../services/auth.service'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
@@ -33,6 +33,7 @@ export default class Login extends Component {
 
     onChangeUsername(e) {
         this.setState({
+            message: "",
             username: e.target.value,
             userInvalid: false
         });
@@ -40,6 +41,7 @@ export default class Login extends Component {
 
     onChangePassword(e) {
         this.setState({
+            message: "",
             password: e.target.value,
             pwInvalid: false
         });
@@ -53,7 +55,7 @@ export default class Login extends Component {
             message: ""
         })
 
-        if (this.state.username == "" && this.state.password == "") {
+        if (this.state.username === "" || this.state.password === "") {
             this.setState({
                 userInvalid: !(this.state.username),
                 pwInvalid: !(this.state.password),
@@ -69,6 +71,8 @@ export default class Login extends Component {
             error => {
                 const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                 this.setState({
+                    userInvalid: true,
+                    pwInvalid: true,
                     loading: false,
                     message: resMessage
                 })
@@ -94,12 +98,14 @@ export default class Login extends Component {
                             <div className='d-flex justify-content-center mb-3'><Image src={Avatar} className='w-25'></Image></div>
                             <h1 className='text-center text-dark'>Welcome</h1>
                             <Form className='text-center' onSubmit={this.handleLogin}>
+
                                 <Form.Group>
                                     <Form.Control type="text" placeholder="Username" onChange={this.onChangeUsername} isInvalid={this.state.userInvalid} />
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control type="password" placeholder="Password" onChange={this.onChangePassword} isInvalid={this.state.pwInvalid} />
                                 </Form.Group>
+                                <Alert variant='danger' show={this.state.message}>{this.state.message}</Alert>
                                 <Button variant="primary" type="submit" className='w-100 mb-1' disabled={this.state.loading}>Login</Button>
                                 <Nav className="justify-content-center">
                                     <Nav.Item>
@@ -109,6 +115,7 @@ export default class Login extends Component {
                                         <Nav.Link href='./register'><u>Click here</u></Nav.Link>
                                     </Nav.Item>
                                 </Nav>
+
                             </Form>
                         </Jumbotron>
                     </Col>
