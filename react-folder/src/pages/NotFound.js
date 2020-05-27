@@ -1,9 +1,20 @@
 import React from 'react';
+import { Container, Row, Image, Navbar } from 'react-bootstrap';
+import { Logo, PageNotFound } from '../img'
 
-const NotFound = () =>
-    <div>
-        <h3>404 page not found</h3>
-        <p>We are sorry but the page you are looking for does not exist.</p>
-    </div>
+//Component LandingPage
+export default function LandingPage() {
+    return (
+        <Container fluid>
 
-export default NotFound;
+            <Navbar>
+                <img src={Logo} alt='PaperCoin' />
+            </Navbar>
+
+            <Row className='main-content'>
+                <Image src={PageNotFound} className='mx-auto my-auto'></Image>
+            </Row>
+
+        </Container >
+    )
+}
