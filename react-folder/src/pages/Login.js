@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert } from 'react-bootstrap';
 import AuthService from '../services/auth.service'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
-
-const required = value => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                This field is required!
-            </div>
-        );
-    }
-};
 
 //Component LandingPage
 export default class Login extends Component {
