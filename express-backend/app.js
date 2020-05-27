@@ -10,6 +10,12 @@ const dbConfig = require("./app/config/db.config.js")
 
 const app = express();
 
+const corsOptions = {
+    origin: "*"
+};
+
+app.use(cors(corsOptions));
+
 // define routes
 // require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
@@ -18,11 +24,6 @@ const usersRouter = require('./routes/users');
 const testRouter = require("./routes/testing-router");
 
 // check .env file within react folder
-const corsOptions = {
-    origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
 
 // parse json requests
 app.use(bodyParser.json());
