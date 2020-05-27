@@ -19,6 +19,12 @@ body {
 }
 
 .main-content {
+  width: 100vw;
   height: 100vh;
-  margin-top: -66px;
+  position: absolute;
+  top: 0px;
+}
+
+.z-100 {
+  z-index: 100;
 }

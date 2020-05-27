@@ -9,8 +9,8 @@ export default function LandingPage() {
 
             <Image src={Wave} className='position-fixed h-100'></Image>
 
-            <Navbar>
-                <img src={Logo} alt='PaperCoin' />
+            <Navbar className='z-100'>
+                <Navbar.Brand href='./'><img src={Logo} alt='PaperCoin' /></Navbar.Brand>
             </Navbar>
 
             <Row className='main-content'>
