@@ -14,7 +14,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-spring": "^8.0.27",
-    "axios": "latest",
     "axios": "latest"
   },
   "scripts": {
@@ -40,6 +39,8 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "file-loader": "^6.0.0"
+    "file-loader": "^6.0.0",
+    "react-validation": "^3.0.7",
+    "validator": "^13.0.0"
   }
 }
