@@ -1,6 +1,6 @@
 import Wave from './wave.svg';
 import Portfolio from './portfolio.svg';
-import Logo from './PaperCoin_white.svg';
-import LogoDark from './LogoDark.svg';
+import Logo from './logo.svg';
+import Avatar from './avatar.svg';
 
-export { Wave, Portfolio, Logo, LogoDark };
+export { Wave, Portfolio, Logo, Avatar };

@@ -1,35 +1,47 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom'
-import { useSpring, animated as a, interpolate } from 'react-spring'
-
-//img
-import { Wave, Portfolio } from '../img'
-
-
+import React from 'react';
+import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav } from 'react-bootstrap';
+import { Wave, Portfolio, Logo, Avatar } from '../img'
 
 //Component LandingPage
 export default function LandingPage() {
-    const props = useSpring({
-        from: { marginRight: '-400px' },
-        to: { marginRight: '0px' }
-    })
     return (
-        <div>
-            <img class='wave' src={Wave}></img>
-            <div class='right center'>
-                <img class='portfolio' src={Portfolio}></img>
-            </div>
-            <div class='left center'>
-                <div class='getStarted'>
-                    <form>
-                        <label for='email'>Email</label><br></br>
-                        <input id='email' type='email'></input><br></br>
-                        <label for='password'>Password</label><br></br>
-                        <input id='password' type='password'></input><br></br>
-                        <input class='button m-t' type='submit' value='Login'></input>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <Container fluid>
+
+            <Image src={Wave} className='position-fixed h-100'></Image>
+
+            <Navbar>
+                <img src={Logo} alt='PaperCoin' />
+            </Navbar>
+
+            <Row className='main-content'>
+                <Col className='d-flex'>
+                    <Image src={Portfolio} className='mx-auto my-auto h-60' fluid></Image>
+                </Col>
+                <Col className='d-flex'>
+                    <Jumbotron className='mx-auto my-auto w-75 d-inline'>
+                        <div className='d-flex justify-content-center mb-3'><Image src={Avatar} className='w-25'></Image></div>
+                        <h1 className='text-center text-dark'>Welcome</h1>
+                        <Form className='text-center'>
+                            <Form.Group>
+                                <Form.Control type="text" placeholder="Username" />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control type="password" placeholder="Password" />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" className='w-100 mb-1'>Login</Button>
+                            <Nav className="justify-content-center" activeKey="/home">
+                                <Nav.Item>
+                                    <Nav.Link disabled>Not registered yet?</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item className='ml-n4'>
+                                    <Nav.Link href='./register'><u>Click here</u></Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </Form>
+                    </Jumbotron>
+                </Col>
+            </Row>
+
+        </Container >
     )
 }
