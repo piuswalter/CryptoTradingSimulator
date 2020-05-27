@@ -7,29 +7,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #061125;
+  overflow: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container-fluid {
+  padding: 0;
 }
 
-.top-bar {
-  height: 8vh;
+.h-60 {
+  height: 60%;
 }
 
 .main-content {
-  height: 92vh;
-}
-
-#h1 {
-  font-size: 47px;
-}
-
-#h2 {
-  font-size: 30px;
-}
-
-#h3 {
-  font-size: 25px;
+  height: 100vh;
+  margin-top: -66px;
 }

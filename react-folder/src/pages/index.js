@@ -1,6 +1,6 @@
-import LandingPage from './LandingPage';
+import Start from './Start';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
 
-export { LandingPage, Login, Dashboard, NotFound };
+export { Start, Login, Dashboard, NotFound };

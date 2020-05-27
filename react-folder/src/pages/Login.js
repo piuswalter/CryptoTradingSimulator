@@ -1,41 +1,34 @@
-//Modules
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { useSpring, animated as a, interpolate } from 'react-spring'
 
-//Assets
-import PaperCoinLogo from '../svg/PaperCoin_white.svg';
-import Balloons from '../svg/balloons.svg';
+//img
+import { Wave, Portfolio } from '../img'
+
 
 
 //Component LandingPage
-export default function Login() {
+export default function LandingPage() {
+    const props = useSpring({
+        from: { marginRight: '-400px' },
+        to: { marginRight: '0px' }
+    })
     return (
-        <div class="container-fluid">
-            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <div class="row" style={{ height: "8vh" }}>
-                <div class="col my-auto">
-                    <img id="logo" src={PaperCoinLogo} style={{ height: "5vh" }}></img>
-                </div>
+        <div>
+            <img class='wave' src={Wave}></img>
+            <div class='right center'>
+                <img class='portfolio' src={Portfolio}></img>
             </div>
-
-            <div class="row" style={{ height: "92vh" }}>
-                <div class="col align-bottom">
-                    <img src={Balloons} style={{ height: "92vh" }}></img>
-                </div>
-                <div class="col my-auto">
+            <div class='left center'>
+                <div class='getStarted'>
                     <form>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email"></input>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"></input>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <label for='email'>Email</label><br></br>
+                        <input id='email' type='email'></input><br></br>
+                        <label for='password'>Password</label><br></br>
+                        <input id='password' type='password'></input><br></br>
+                        <input class='button m-t' type='submit' value='Login'></input>
                     </form>
                 </div>
-
             </div>
         </div>
     )
