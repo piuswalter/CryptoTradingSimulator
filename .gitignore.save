@@ -1,7 +1,4 @@
 .DS_Store
 node_modules
-.idea
 express-backend/node_modules
-express-backend/.idea
 react-folder/node_modules
-react-folder/.idea
