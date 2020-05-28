@@ -3,8 +3,9 @@ import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert
 import AuthService from '../services/auth.service'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
-//Component LandingPage
+//Component Login
 export default class Login extends Component {
+
     constructor(props) {
         super(props);
         this.handleLogin = this.handleLogin.bind(this);
