@@ -1,0 +1,14 @@
+.container {
+    margin: 15px auto;
+}
+
+.userInformationPanel {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.chart {
+    height: 50% !important;
+}
