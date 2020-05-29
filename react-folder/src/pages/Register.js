@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, ProgressBar } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, ProgressBar, Alert } from 'react-bootstrap';
+import AuthService from '../services/auth.service'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
 //Component Register
@@ -122,7 +123,27 @@ export default class Register extends Component {
             return
         }
 
-        console.log('register');
+        // Uses AuthService.register(): Either success or error
+        AuthService.register(
+            this.state.username,
+            this.state.email,
+            this.state.password
+        ).then(
+            response => {
+                this.setState({
+                    message: response.data.message,
+                    successful: true
+                });
+            },
+            error => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                this.setState({
+                    successful: false,
+                    loading: false,
+                    message: resMessage
+                });
+            }
+        )
 
 
     }
@@ -158,6 +179,7 @@ export default class Register extends Component {
                                     <Form.Control type="password" placeholder="Password" onChange={this.onChangePassword} isInvalid={this.state.pwInvalid} />
                                     <ProgressBar className='mt-1' now={this.state.pwStrength} variant={this.state.pwColor}></ProgressBar>
                                 </Form.Group>
+                                <Alert variant='danger' show={this.state.message}>{this.state.message}</Alert>
                                 <Button variant="primary" type="submit" className='w-100 mb-1' disabled={this.state.loading}>Register</Button>
                                 <Nav className="justify-content-center" activeKey="/home">
                                     <Nav.Item>
