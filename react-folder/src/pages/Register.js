@@ -143,21 +143,21 @@ export default class Register extends Component {
                     message: resMessage
                 });
             }
-        ).then(
-            AuthService.login(this.state.username, this.state.password).then(() => {
-                this.props.history.push("/dashboard");
-                window.location.reload();
-            },
-                error => {
-                    const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-                    this.setState({
-                        userInvalid: true,
-                        pwInvalid: true,
-                        loading: false,
-                        message: resMessage
-                    })
-                })
         )
+        setTimeout(() => {
+            if (this.state.successful == true) {
+                AuthService.login(this.state.username, this.state.password).then(() => {
+                    this.props.history.push("/dashboard");
+                    window.location.reload();
+                },
+                    () => {
+                        const resMessage = "automatic login failed, please login manually";
+                        this.setState({
+                            message: resMessage
+                        })
+                    })
+            }
+        }, 100);
     }
 
     render() {
