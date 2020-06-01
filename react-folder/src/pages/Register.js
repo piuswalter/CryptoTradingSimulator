@@ -24,7 +24,8 @@ export default class Register extends Component {
             emailInvalid: false,
             pwInvalid: false,
             pwStrength: 0,
-            pwColor: ""
+            pwColor: "",
+            currentUser: AuthService.getCurrentUser()
         };
     }
 
@@ -161,6 +162,12 @@ export default class Register extends Component {
     }
 
     render() {
+        const { currentUser } = this.state;
+
+        if (currentUser != null) {
+            this.props.history.push("/dashboard");
+            window.location.reload();
+        }
         return (
             <Container fluid>
 

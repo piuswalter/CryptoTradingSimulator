@@ -18,7 +18,8 @@ export default class Login extends Component {
             loading: false,
             message: "",
             userInvalid: false,
-            pwInvalid: false
+            pwInvalid: false,
+            currentUser: AuthService.getCurrentUser()
         };
     }
 
@@ -71,6 +72,12 @@ export default class Login extends Component {
     }
 
     render() {
+        const { currentUser } = this.state;
+
+        if (currentUser != null) {
+            this.props.history.push("/dashboard");
+            window.location.reload();
+        }
         return (
             <Container fluid>
 
