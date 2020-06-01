@@ -94,6 +94,25 @@ export default class Register extends Component {
 
     }
 
+    // Function to login after registration
+    login() {
+
+        setTimeout(() => {
+            if (this.state.successful === true) {
+                AuthService.login(this.state.username, this.state.password)
+                    .then(
+                        () => {
+                            this.props.history.push("/dashboard");
+                            window.location.reload();
+                        },
+                        () => {
+                            this.login();
+                        })
+            }
+        }, 1)
+
+    }
+
     handleRegister(e) {
 
         // prevents the default behaviour of submit button
@@ -131,6 +150,7 @@ export default class Register extends Component {
                     this.setState({
                         successful: true
                     });
+                    this.login();
                 },
                 error => {
                     const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -141,25 +161,9 @@ export default class Register extends Component {
                     });
                 }
             )
-
-        //Instant login after short delay if registration was successful
-        setTimeout(() => {
-            if (this.state.successful == true) {
-                AuthService.login(this.state.username, this.state.password)
-                    .then(
-                        () => {
-                            this.props.history.push("/dashboard");
-                            window.location.reload();
-                        },
-                        () => {
-                            const resMessage = "automatic login failed, please login manually";
-                            this.setState({
-                                message: resMessage
-                            })
-                        })
-            }
-        }, 100);
     }
+
+
 
     render() {
         const { currentUser } = this.state;
