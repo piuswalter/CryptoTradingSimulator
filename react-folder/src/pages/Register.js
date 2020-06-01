@@ -125,38 +125,38 @@ export default class Register extends Component {
         }
 
         // Uses AuthService.register(): Either success or error
-        AuthService.register(
-            this.state.username,
-            this.state.email,
-            this.state.password
-        ).then(
-            response => {
-                this.setState({
-                    message: response.data.message,
-                    successful: true
-                });
-            },
-            error => {
-                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-                this.setState({
-                    successful: false,
-                    loading: false,
-                    message: resMessage
-                });
-            }
-        )
+        AuthService.register(this.state.username, this.state.email, this.state.password)
+            .then(
+                () => {
+                    this.setState({
+                        successful: true
+                    });
+                },
+                error => {
+                    const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                    this.setState({
+                        successful: false,
+                        loading: false,
+                        message: resMessage
+                    });
+                }
+            )
+
+        //Instant login after short delay if registration was successful
         setTimeout(() => {
             if (this.state.successful == true) {
-                AuthService.login(this.state.username, this.state.password).then(() => {
-                    this.props.history.push("/dashboard");
-                    window.location.reload();
-                },
-                    () => {
-                        const resMessage = "automatic login failed, please login manually";
-                        this.setState({
-                            message: resMessage
+                AuthService.login(this.state.username, this.state.password)
+                    .then(
+                        () => {
+                            this.props.history.push("/dashboard");
+                            window.location.reload();
+                        },
+                        () => {
+                            const resMessage = "automatic login failed, please login manually";
+                            this.setState({
+                                message: resMessage
+                            })
                         })
-                    })
             }
         }, 100);
     }
