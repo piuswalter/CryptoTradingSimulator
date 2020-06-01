@@ -1,4 +1,4 @@
-const { authJwt } = require("../app/middlewares");
+const { authJwt, exchange } = require("../app/middlewares");
 const controller = require("../app/controllers/user.controller");
 
 module.exports = function(app) {
@@ -13,4 +13,8 @@ module.exports = function(app) {
     app.get("/data/test/all", controller.allAccess);
 
     app.get("/data/test/user", [authJwt.verifyToken], controller.userBoard);
+
+    app.get("/exchange", exchange.getAllInformationList);
+    app.get("/exchange/all", exchange.getAllInformation);
+    app.get("/exchange/price", exchange.getCurrentPrice);
 };
