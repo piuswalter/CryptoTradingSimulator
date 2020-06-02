@@ -18,24 +18,39 @@ class UserService {
                 return response.data;
             });
     }
-    buy(coin, value) {
+    buy(username, coin, value) {
         return axios
             .post(API_URL + "buy", {
+                username,
                 coin,
                 value,
             }, { headers: authHeader() })
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem("coins", JSON.stringify(response.data.coins));
+                    localStorage.setItem("coins", JSON.stringify({
+                        "bitcoin": response.data.bitcoin,
+                        "dash": response.data.dash,
+                        "monero": response.data.monero,
+                        "ethereum": response.data.ethereum,
+                        "xrp": response.data.xrp,
+                        "tether": response.data.tether,
+                        "bitcoinCash": response.data.bitcoinCash,
+                        "bitcoinSV": response.data.bitcoinSV,
+                        "litecoin": response.data.litecoin,
+                        "eos": response.data.eos,
+                        "binancecoin": response.data.binancecoin,
+                        "tezos": response.data.tezos
+                    }));
                 }
 
                 return response.data;
             });
     }
-    sell(coin, value) {
+    sell(username, coin, value) {
         return axios
             .post(API_URL + "sell", {
+                username,
                 coin,
                 value,
             }, { headers: authHeader() })

@@ -12,20 +12,18 @@ exports.register = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
         balance: 1000000,
-        coins: {
-            bitcoin: 0,
-            dash: 0,
-            monero: 0,
-            ethereum: 0,
-            xrp: 0,
-            tether: 0,
-            bitcoinCash: 0,
-            bitcoinSV: 0,
-            litecoin: 0,
-            eos: 0,
-            binancecoin: 0,
-            tezos: 0
-        }
+        bitcoin: 0,
+        dash: 0,
+        monero: 0,
+        ethereum: 0,
+        xrp: 0,
+        tether: 0,
+        bitcoinCash: 0,
+        bitcoinSV: 0,
+        litecoin: 0,
+        eos: 0,
+        binancecoin: 0,
+        tezos: 0
     });
 
     user.save((err, user) => {

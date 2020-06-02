@@ -53,7 +53,7 @@ db.mongoose
 const {verifyRegister}  = require("./app/middlewares");
 const { authJwt } = require("./app/middlewares");
 const controller = require("./app/controllers/auth.controller");
-const user_controller = require("./app/controllers/user.controller")
+const user_controller = require("./app/controllers/user.controller");
 
 app.use(function(req, res, next) {
     res.header(
@@ -75,7 +75,7 @@ app.post("/auth/login", controller.login);
 
 app.post("/user/balance", [authJwt.verifyToken], user_controller.getUserBalance);
 
-app.post("/user/buy", [authJwt.verifyToken]);
+app.post("/user/buy", [authJwt.verifyToken, user_controller.verifyBalance], user_controller.buy);
 
 app.post("/user/sell", [authJwt.verifyToken]);
 

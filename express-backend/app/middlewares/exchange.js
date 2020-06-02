@@ -31,10 +31,21 @@ getCurrentPrice = (req, res, next) => {
 	})
 };
 
+getCurrentPriceTest = (coin) => {
+	if (coin == "bitcoin") {
+		return 500
+	}
+	if (coin == "dash") {
+		return 200
+	}
+};
+
+
 const exchange = {
 	getAllInformationList,
 	getAllInformation,
-	getCurrentPrice
+	getCurrentPrice,
+	getCurrentPriceTest
 };
 
 module.exports = exchange;
