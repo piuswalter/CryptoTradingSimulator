@@ -17,4 +17,7 @@ module.exports = function(app) {
     app.get("/exchange", exchange.getAllInformationList);
     app.get("/exchange/all", exchange.getAllInformation);
     app.get("/exchange/price", exchange.getCurrentPrice);
+
+
+
 };

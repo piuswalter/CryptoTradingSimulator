@@ -23,7 +23,7 @@ class UserService {
             .post(API_URL + "buy", {
                 coin,
                 value,
-            })
+            }, { headers: authHeader() })
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
@@ -38,7 +38,7 @@ class UserService {
             .post(API_URL + "sell", {
                 coin,
                 value,
-            })
+            }, { headers: authHeader() })
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
