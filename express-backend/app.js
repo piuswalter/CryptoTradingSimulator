@@ -77,7 +77,7 @@ app.post("/user/balance", [authJwt.verifyToken], user_controller.getUserBalance)
 
 app.post("/user/buy", [authJwt.verifyToken, user_controller.verifyBalance], user_controller.buy);
 
-app.post("/user/sell", [authJwt.verifyToken]);
+app.post("/user/sell", [authJwt.verifyToken, user_controller.verifyCoins], user_controller.sell);
 
 
 

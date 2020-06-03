@@ -61,6 +61,44 @@ exports.verifyBalance = (req, res, next) => {
         })
 };
 
+exports.verifyCoins = (req, res, next) => {
+    User.findOne({
+        username: req.body.username
+    })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
+
+            let userCoins = {
+                "username": user.username,
+                "balance": user.balance,
+                "bitcoin": user.bitcoin,
+                "dash": user.dash,
+                "monero": user.monero,
+                "ethereum": user.ethereum,
+                "xrp": user.xrp,
+                "tether": user.tether,
+                "bitcoinCash": user.bitcoinCash,
+                "bitcoinSV": user.bitcoinSV,
+                "litecoin": user.litecoin,
+                "eos": user.eos,
+                "binancecoin": user.binancecoin,
+                "tezos": user.tezos
+            };
+            const coinsSold = req.body.value / exchange.getCurrentPriceTest(req.body.coin);
+            const coinBalance = userCoins[req.body.coin];
+            if (coinsSold > coinBalance) {
+                return res.status(404).send({message: "Insufficient funds."});
+            } else {
+                // Pass coinsSold to next middleware by adding to request object
+                req.coinsSold = coinsSold;
+                req.coinBalance = coinBalance;
+                next();
+            }
+        })
+};
 
 exports.buy = (req, res) => {
     const coin = req.body.coin;
@@ -95,5 +133,31 @@ exports.buy = (req, res) => {
 };
 
 exports.sell = (req, res) => {
-    return
-}
+    const coinsSold = req.coinsSold;
+    // Build correct query
+    let myquery = {balance:req.body.value};
+    myquery[req.body.coin] = -coinsSold;
+    // Debug: console.log(myquery);
+    User.findOneAndUpdate({
+            username: req.body.username
+        },
+        {
+            $inc: myquery
+        })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({message: "User Not found."});
+            }
+
+            res.status(200).send({
+                balance: user.balance+parseInt(req.body.value),
+                coin: req.coinBalance-coinsSold
+
+            });
+        });
+};
