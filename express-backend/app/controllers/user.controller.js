@@ -87,7 +87,7 @@ exports.verifyCoins = (req, res, next) => {
                 "binancecoin": user.binancecoin,
                 "tezos": user.tezos
             };
-            const coinsSold = req.body.value / exchange.getCurrentPriceTest(req.body.coin);
+            const coinsSold = req.body.value / exchange.getCurrentPrice(req.body.coin);
             const coinBalance = userCoins[req.body.coin];
             if (coinsSold > coinBalance) {
                 return res.status(404).send({message: "Insufficient funds."});
@@ -102,7 +102,7 @@ exports.verifyCoins = (req, res, next) => {
 
 exports.buy = (req, res) => {
     const coin = req.body.coin;
-    const coinsBought = req.body.value / exchange.getCurrentPriceTest(coin);
+    const coinsBought = req.body.value / exchange.getCurrentPrice(coin);
     // Build correct query
     let myquery = {balance:-req.body.value};
     myquery[req.body.coin] = coinsBought;
