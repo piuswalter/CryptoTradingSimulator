@@ -7,7 +7,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #061125;
-  overflow: hidden;
 }
 
 .container-fluid {
@@ -16,6 +15,42 @@ body {
 
 .h-60 {
   height: 60%;
+}
+
+.h-45 {
+  height: 45%;
+}
+
+.h-40 {
+  height: 40%;
+}
+
+.h-35 {
+  height: 35%;
+}
+
+.h-30 {
+  height: 30%
+}
+
+.h-20 {
+  height: 20%
+}
+
+.h-15 {
+  height: 15%
+}
+
+.h-10 {
+  height: 10%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.w-45 {
+  width: 45%;
 }
 
 .main-content {
@@ -27,4 +62,8 @@ body {
 
 .z-100 {
   z-index: 100;
+}
+
+.mr-40px {
+  margin-right: 40px;
 }
