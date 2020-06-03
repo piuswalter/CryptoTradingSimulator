@@ -18,6 +18,19 @@ class UserService {
                 return response.data;
             });
     }
+    getUserValue(username) {
+        return axios
+            .post(API_URL + "value", {
+                username
+            }, { headers: authHeader() })
+            .then(response => {
+                if (response.data.accessToken) {
+                    localStorage.setItem("value", JSON.stringify(response.data.uservalue));
+                }
+
+                return response.data;
+            });
+    }
     buy(username, coin, value) {
         return axios
             .post(API_URL + "buy", {

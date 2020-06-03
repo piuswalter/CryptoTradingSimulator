@@ -102,33 +102,41 @@ exports.verifyCoins = (req, res, next) => {
 
 exports.buy = (req, res) => {
     const coin = req.body.coin;
-    const coinsBought = req.body.value / exchange.getCurrentPrice(coin);
-    // Build correct query
-    let myquery = {balance:-req.body.value};
-    myquery[req.body.coin] = coinsBought;
-    // Debug: console.log(myquery);
+    let coinsBought = 0.0;
+    exchange.getCurrentPrice(coin)
+        .then(function (response) {
+        coinsBought = parseFloat(req.body.value) / parseFloat(response.data[0].price_usd);
+        console.log(coinsBought);
+            // Build correct query
+            let myquery = {balance:-req.body.value};
+            myquery[req.body.coin] = coinsBought;
+            // Debug: console.log(myquery);
 
-    User.findOneAndUpdate({
-        username: req.body.username
-    },
-        {
-            $inc: myquery
-        })
-        .exec((err, user) => {
-            if (err) {
-                res.status(500).send({message: err});
-                return;
-            }
+            User.findOneAndUpdate({
+                    username: req.body.username
+                },
+                {
+                    $inc: myquery
+                })
+                .exec((err, user) => {
+                    if (err) {
+                        res.status(500).send({message: err});
+                        return;
+                    }
 
-            if (!user) {
-                return res.status(404).send({message: "User Not found."});
-            }
+                    if (!user) {
+                        return res.status(404).send({message: "User Not found."});
+                    }
 
-            res.status(200).send({
-                balance: user.balance-req.body.value,
-                coin: coinsBought
+                    res.status(200).send({
+                        balance: user.balance-req.body.value,
+                        coin: coinsBought
 
-            });
+                    });
+                });
+    })
+        .catch(function (error) {
+            console.log(error);
         });
 };
 
@@ -158,6 +166,47 @@ exports.sell = (req, res) => {
                 balance: user.balance+parseInt(req.body.value),
                 coin: req.coinBalance-coinsSold
 
+            });
+        });
+};
+
+exports.getUserValue = (req, res) => {
+    User.findOne({
+        username: req.body.username
+    })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({message: "User Not found."});
+            }
+            let userCoins = {
+                "bitcoin": user.bitcoin,
+                "dash": user.dash,
+                "monero": user.monero,
+                "ethereum": user.ethereum,
+                "xrp": user.xrp,
+                "tether": user.tether,
+                "bitcoinCash": user.bitcoinCash,
+                "bitcoinSV": user.bitcoinSV,
+                "litecoin": user.litecoin,
+                "eos": user.eos,
+                "binancecoin": user.binancecoin,
+                "tezos": user.tezos
+            };
+
+            let userValue = user.balance;
+            for (i=0; i < 12; i++) {
+                const coinsAsArray = Object.entries(userCoins);
+                userValue = userValue + coinsAsArray[i][1] * exchange.getCurrentPrice(coinsAsArray[i][0])
+            }
+            res.status(200).send({
+                username: user.username,
+                balance: user.balance,
+                uservalue: userValue
             });
         });
 };

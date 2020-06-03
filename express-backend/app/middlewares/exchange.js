@@ -79,13 +79,7 @@ getCurrentPrice = (coin) => {
 		return -1;
 	}
 
-	axios.get(api_link)
-	.then(function (response) {
-		return parseFloat(res.json(response.data[0].price_usd));
-	})
-	.catch(function (error) {
-		console.log(error);
-	})
+	return axios.get(api_link)
 };
 
 
