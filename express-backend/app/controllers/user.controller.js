@@ -87,16 +87,22 @@ exports.verifyCoins = (req, res, next) => {
                 "binancecoin": user.binancecoin,
                 "tezos": user.tezos
             };
-            const coinsSold = req.body.value / exchange.getCurrentPrice(req.body.coin);
-            const coinBalance = userCoins[req.body.coin];
-            if (coinsSold > coinBalance) {
-                return res.status(404).send({message: "Insufficient funds."});
-            } else {
-                // Pass coinsSold to next middleware by adding to request object
-                req.coinsSold = coinsSold;
-                req.coinBalance = coinBalance;
-                next();
-            }
+            exchange.getCurrentPrice(req.body.coin)
+                .then(function (response) {
+                    const coinsSold = parseFloat(req.body.value) / parseFloat(response.data[0].price_usd);
+                    const coinBalance = userCoins[req.body.coin];
+                    if (coinsSold > coinBalance) {
+                        return res.status(404).send({message: "Insufficient funds."});
+                    } else {
+                        // Pass coinsSold to next middleware by adding to request object
+                        req.coinsSold = coinsSold;
+                        req.coinBalance = coinBalance;
+                        next();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         })
 };
 

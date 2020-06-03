@@ -78,8 +78,8 @@ getCurrentPrice = (coin) => {
 	} else {
 		return -1;
 	}
-
 	return axios.get(api_link)
+
 };
 
 

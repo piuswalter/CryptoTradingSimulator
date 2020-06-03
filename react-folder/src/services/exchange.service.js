@@ -14,7 +14,7 @@ class ExchangeService {
     }
 
     getPercentChange(timerange) {
-        if (timerange == 1) {
+        if (timerange === 1) {
             return Axios
                 .get(API_URL + "/all")
                 .then(response => {
@@ -22,7 +22,7 @@ class ExchangeService {
                     
                     return JSON.parse(localStorage.getItem('percentChange1h'));;
                 });
-        } else if (timerange == 24) {
+        } else if (timerange === 24) {
             return Axios
                 .get(API_URL + "/all")
                 .then(response => {
