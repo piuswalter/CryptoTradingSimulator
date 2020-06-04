@@ -205,14 +205,62 @@ exports.getUserValue = (req, res) => {
             };
 
             let userValue = user.balance;
-            for (i=0; i < 12; i++) {
-                const coinsAsArray = Object.entries(userCoins);
-                userValue = userValue + coinsAsArray[i][1] * exchange.getCurrentPrice(coinsAsArray[i][0])
-            }
-            res.status(200).send({
-                username: user.username,
-                balance: user.balance,
-                uservalue: userValue
-            });
+
+            exchange.getCurrentPrice("bitcoin")
+                .then((response) => {
+                    userValue = userValue + userCoins.bitcoin * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("dash")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.dash * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("monero")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.monero * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("ethereum")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.ethereum * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("xrp")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.xrp * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("tether")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.tether * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("bitcoinCash")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.bitcoinCash * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("bitcoinSV")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.bitcoinSV * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("litecoin")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.litecoin * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("eos")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.eos * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("binancecoin")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.binancecoin * response.data[0].price_usd;
+                    return exchange.getCurrentPrice("tezos")
+                })
+                .then((response) => {
+                    userValue = userValue + userCoins.tezos * response.data[0].price_usd;
+                    res.status(200).send({
+                        username: user.username,
+                        balance: user.balance,
+                        uservalue: userValue
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         });
 };
