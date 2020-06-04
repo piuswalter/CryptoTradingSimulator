@@ -12,7 +12,18 @@ class UserService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem("coins", JSON.stringify(response.data.coins));
+                    localStorage.setItem("bitcoin", JSON.stringify(response.data.bitcoin));
+                    localStorage.setItem("dash", JSON.stringify(response.data.dash));
+                    localStorage.setItem("monero", JSON.stringify(response.data.monero));
+                    localStorage.setItem("ethereum", JSON.stringify(response.data.ethereum));
+                    localStorage.setItem("xrp", JSON.stringify(response.data.xrp));
+                    localStorage.setItem("tether", JSON.stringify(response.data.tether));
+                    localStorage.setItem("bitcoinCash", JSON.stringify(response.data.bitcoinCash));
+                    localStorage.setItem("bitcoinSV", JSON.stringify(response.data.bitcoinSV));
+                    localStorage.setItem("litecoin", JSON.stringify(response.data.litecoin));
+                    localStorage.setItem("eos", JSON.stringify(response.data.eos));
+                    localStorage.setItem("binancecoin", JSON.stringify(response.data.binancecoin));
+                    localStorage.setItem("tezos", JSON.stringify(response.data.tezos));
                 }
 
                 return response.data;
@@ -41,25 +52,11 @@ class UserService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem("coins", JSON.stringify({
-                        "bitcoin": response.data.bitcoin,
-                        "dash": response.data.dash,
-                        "monero": response.data.monero,
-                        "ethereum": response.data.ethereum,
-                        "xrp": response.data.xrp,
-                        "tether": response.data.tether,
-                        "bitcoinCash": response.data.bitcoinCash,
-                        "bitcoinSV": response.data.bitcoinSV,
-                        "litecoin": response.data.litecoin,
-                        "eos": response.data.eos,
-                        "binancecoin": response.data.binancecoin,
-                        "tezos": response.data.tezos
-                    }));
-                }
-
+                    localStorage.setItem(coin, JSON.stringify(parseFloat(localStorage.getItem(coin)) + parseFloat(response.data.tezos)));
+                    }
                 return response.data;
             });
-    }
+                }
     sell(username, coin, value) {
         return axios
             .post(API_URL + "sell", {
@@ -70,7 +67,7 @@ class UserService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem("coins", JSON.stringify(response.data.coins));
+                    localStorage.setItem(coin, JSON.stringify(response.data.newCoinBalance));
                 }
 
                 return response.data;

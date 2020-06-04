@@ -136,7 +136,7 @@ exports.buy = (req, res) => {
 
                     res.status(200).send({
                         balance: user.balance-req.body.value,
-                        coin: coinsBought
+                        coinsBought: coinsBought
 
                     });
                 });
@@ -170,7 +170,7 @@ exports.sell = (req, res) => {
 
             res.status(200).send({
                 balance: user.balance+parseInt(req.body.value),
-                coin: req.coinBalance-coinsSold
+                newCoinBalance: req.coinBalance-coinsSold
 
             });
         });
