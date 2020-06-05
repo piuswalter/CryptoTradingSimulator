@@ -2,6 +2,7 @@ import React from "react";
 
 import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
+import UserService from '../services/user.service';
 import ExchangeService from '../services/exchange.service';
 
 // reactstrap components
@@ -12,14 +13,13 @@ export default class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.getBalance = this.getBalance.bind(this);
+
 		this.state = {
 			currentUser: AuthService.getCurrentUser(),
-			currentBTC: null,
-			percentChange1h: null,
-			percentChange24h: null,
-			percentChange7d: null,
-			chartWidth: 0,
-			chartHeight: 600
+			currentUSD: 0,
+			currentBTC: 0,
+			message: ""
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
@@ -27,35 +27,31 @@ export default class Dashboard extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getCurrentBTCPrice();
-		this.getCurrentBTCPercentChange();
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
+		this.getBalance();
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateWindowDimensions);
 	}
 
-	getCurrentBTCPrice() {
-		ExchangeService.getCurrentPrice().then((currentBTC) => this.setState({
-			currentBTC: currentBTC
-		}));
-	}
-
-	getCurrentBTCPercentChange() {
-		ExchangeService.getPercentChange(1).then((percentChange1h) => this.setState({
-			percentChange1h: percentChange1h
-		}));
-		ExchangeService.getPercentChange(24).then((percentChange24h) => this.setState({
-			percentChange24h: percentChange24h
-		}));
-		ExchangeService.getPercentChange(7).then((percentChange7d) => this.setState({
-			percentChange7d: percentChange7d
-		}));
-	}
-
 	updateWindowDimensions() {
+	}
+
+	getBalance() {
+		UserService.getUserBalance(this.state.currentUser.username).then((response) => {
+			console.log(response);
+			this.setState({
+				currentUSD: response.balance.toFixed(2)
+			});
+		},
+			error => {
+				const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+				this.setState({
+					message: resMessage
+				})
+			})
 	}
 
 	handleLogout(e) {
@@ -66,6 +62,7 @@ export default class Dashboard extends React.Component {
 
 	render() {
 		const { currentUser } = this.state;
+		const { currentUSD } = this.state;
 
 		if (currentUser == null) {
 			this.props.history.push("/login");
@@ -83,7 +80,7 @@ export default class Dashboard extends React.Component {
 						<Button href='./about' className='w-15 ml-4'>About</Button>
 					</Nav>
 					<Navbar.Text className='w-20 text-light mr-2'>Your Balance:</Navbar.Text>
-					<Navbar.Text className='text-light mr-4 ml-n4'>$134567</Navbar.Text>
+					<Navbar.Text className='text-light mr-4 ml-n4'>${currentUSD}</Navbar.Text>
 					<Button className='w-15' onClick={this.handleLogout}>Logout</Button>
 				</Navbar>
 

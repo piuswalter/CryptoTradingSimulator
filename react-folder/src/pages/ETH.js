@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
-import { Container, Row, Col, Image, Button, Navbar, Nav, Form } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Nav, Form, Modal, Table } from 'react-bootstrap';
 import { Logo, ETH_logo } from '../img';
 import UserService from '../services/user.service';
 import ExchangeService from '../services/exchange.service';
@@ -13,11 +13,20 @@ export default class btc extends React.Component {
     constructor(props) {
         super(props);
 
+        this.getBalance = this.getBalance.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
+        this.handleSell = this.handleSell.bind(this);
+
         this.state = {
             currentUser: UserService.getCurrentUser(),
-            mainHeight: 0
+            mainHeight: 0,
+            currenUSD: 0,
+            currentETH: 0,
+            message: ""
         };
     }
+
+
 
     updateWindowDimension() {
         this.setState({
@@ -29,6 +38,7 @@ export default class btc extends React.Component {
 
     componentDidMount() {
         window.addEventListener('resize', this.resize);
+        this.getBalance();
     }
 
     componentWillUnmount() {
@@ -36,11 +46,11 @@ export default class btc extends React.Component {
     }
 
     onChangeCoin() {
-        document.getElementById('inputUSD').value = (240 * document.getElementById('inputCoin').value).toFixed(2)
+        document.getElementById('inputUSD').value = (240 * document.getElementById('inputCoin').value).toFixed(2);
     }
 
     onChangeUSD() {
-        document.getElementById('inputCoin').value = (1 / 240 * document.getElementById('inputUSD').value).toFixed(5)
+        document.getElementById('inputCoin').value = (1 / 240 * document.getElementById('inputUSD').value).toFixed(5);
     }
 
     handleLogout(e) {
@@ -49,12 +59,83 @@ export default class btc extends React.Component {
         window.location.reload();
     };
 
+    getBalance() {
+        UserService.getUserBalance(this.state.currentUser.username).then((response) => {
+            this.setState({
+                currentUSD: response.balance.toFixed(2),
+                currentETH: response.ethereum.toFixed(5)
+            })
+        },
+            error => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                this.setState({
+                    message: resMessage
+                })
+            })
+    }
+
+    handleBuy(e) {
+        e.preventDefault();
+
+        this.setState({
+            loading: true
+        });
+
+        UserService.buy(this.state.currentUser.username, 'ethereum', document.getElementById('inputUSD').value).then((response) => {
+            this.getBalance();
+            this.setState({
+                buySuccess: true,
+                coinsBought: response.coinsBought.toFixed(5),
+                buyModal: true
+            });
+            console.log(response);
+        },
+            error => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                this.setState({
+                    failure: true,
+                    message: resMessage
+                })
+            })
+
+    }
+
+    handleSell(e) {
+        e.preventDefault();
+
+        this.setState({
+            loading: true
+        });
+
+        UserService.sell(this.state.currentUser.username, 'ethereum', document.getElementById('inputUSD').value).then((response) => {
+            this.getBalance();
+            this.setState({
+                sellSuccess: true,
+                coinsSold: response.coinsSold,
+            });
+            console.log(response);
+        },
+            error => {
+                const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                this.setState({
+                    failure: true,
+                    message: resMessage
+                })
+            })
+
+    }
+
     render() {
         const { currentUser } = this.state;
         if (currentUser == null) {
             this.props.history.push("/login");
             window.location.reload();
         }
+
+        const { currentUSD } = this.state;
+        const { currentETH } = this.state;
+        const { coinsBought } = this.state;
+        const { coinsSold } = this.state;
 
         return (
             <Container fluid>
@@ -67,7 +148,7 @@ export default class btc extends React.Component {
                         <Button href='./about' className='w-15 ml-4'>About</Button>
                     </Nav>
                     <Navbar.Text className='w-20 text-light mr-2'>Your Balance:</Navbar.Text>
-                    <Navbar.Text className='text-light mr-4 ml-n4'>$134567</Navbar.Text>
+                    <Navbar.Text className='text-light mr-4 ml-n4'>${currentUSD}</Navbar.Text>
                     <Button className='w-15' onClick={this.handleLogout}>Logout</Button>
                 </Navbar>
 
@@ -104,7 +185,7 @@ export default class btc extends React.Component {
                         </div>
                         <div className='h-30 pt-2'>
                             <div className='rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
-                                <h3>Owned: 3.456x ($756.56)</h3>
+                                <h3>Owned: {currentETH}x (${(240 * currentETH).toFixed(2)})</h3>
                             </div>
                         </div>
                         <div className='h-40 pt-2'>
@@ -124,10 +205,10 @@ export default class btc extends React.Component {
                                     </div>
                                     <div className='h-30 d-flex justify-content-center'>
                                         <div className='w-50 h-100 d-flex justify-content-center'>
-                                            <Button className='w-95 h-90 bg-success border-0'><h4 className='m-auto'>Buy</h4></Button>
+                                            <Button className='w-95 h-90 bg-success border-0' onClick={this.handleBuy} disabled={this.state.loading}><h4 className='m-auto'>Buy</h4></Button>
                                         </div>
                                         <div className='w-50 h-100 d-flex justify-content-center'>
-                                            <Button className='w-95 h-90 bg-danger border-0'><h4 className='m-auto'>Sell</h4></Button>
+                                            <Button className='w-95 h-90 bg-danger border-0' onClick={this.handleSell} disabled={this.state.loading}><h4 className='m-auto'>Sell</h4></Button>
                                         </div>
                                     </div>
                                 </Form>
@@ -136,6 +217,47 @@ export default class btc extends React.Component {
                     </Col>
 
                 </Row >
+
+                <Modal size="sm" centered show={this.state.buySuccess} onHide={() => this.setState({ buySuccess: false, loading: false })}>
+                    <Modal.Header className='bg-success' closeButton>
+                        <Modal.Title>
+                            Successful purchase!
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark d-flex justify-content-center align-items-center'>
+                        <Table striped bordered hover variant="dark">
+                            <tr><td>Bought:</td><td>{coinsBought}ETH</td></tr>
+                            <tr><td>Total:</td><td>{currentETH}ETH</td></tr>
+                            <tr><td>Balance:</td><td>${currentUSD}</td></tr>
+                        </Table>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal size="sm" centered show={this.state.sellSuccess} onHide={() => this.setState({ sellSuccess: false, loading: false })}>
+                    <Modal.Header className='bg-success' closeButton>
+                        <Modal.Title>
+                            Successful sale!
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark d-flex justify-content-center align-items-center'>
+                        <Table striped bordered hover variant="dark">
+                            <tr><td>Sold:</td><td>{coinsSold} ETH</td></tr>
+                            <tr><td>Total:</td><td>{currentETH} ETH</td></tr>
+                            <tr><td>Balance:</td><td>${currentUSD}</td></tr>
+                        </Table>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal size="sm" centered show={this.state.failure} onHide={() => this.setState({ failure: false, loading: false })}>
+                    <Modal.Header className='bg-danger' closeButton>
+                        <Modal.Title>
+                            Action failed!
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark d-flex justify-content-center align-items-center'>
+                        {this.state.message}
+                    </Modal.Body>
+                </Modal>
 
             </Container >
         )

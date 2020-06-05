@@ -52,11 +52,10 @@ class UserService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem(coin, JSON.stringify(parseFloat(localStorage.getItem(coin)) + parseFloat(response.data.tezos)));
-                    }
+                }
                 return response.data;
             });
-                }
+    }
     sell(username, coin, value) {
         return axios
             .post(API_URL + "sell", {
@@ -67,7 +66,6 @@ class UserService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem("balance", JSON.stringify(response.data.balance));
-                    localStorage.setItem(coin, JSON.stringify(response.data.newCoinBalance));
                 }
 
                 return response.data;
