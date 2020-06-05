@@ -36,7 +36,7 @@ class UserService {
             }, { headers: authHeader() })
             .then(response => {
                 if (response.data.accessToken) {
-                    localStorage.setItem("value", JSON.stringify(response.data.uservalue));
+                    localStorage.setItem("userworth", JSON.stringify(response.data.uservalue));
                 }
 
                 return response.data;
