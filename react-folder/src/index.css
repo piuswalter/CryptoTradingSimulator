@@ -13,6 +13,18 @@ body {
   padding: 0;
 }
 
+.h-90 {
+  height: 90%;
+}
+
+.h-88 {
+  height: 88%;
+}
+
+.h-85 {
+  height: 85%;
+}
+
 .h-60 {
   height: 60%;
 }
@@ -30,27 +42,71 @@ body {
 }
 
 .h-30 {
-  height: 30%
+  height: 30%;
+}
+
+.h-23 {
+  height: 23%;
 }
 
 .h-20 {
-  height: 20%
+  height: 20%;
 }
 
 .h-15 {
-  height: 15%
+  height: 15%;
+}
+
+.h-12 {
+  height: 12%;
 }
 
 .h-10 {
   height: 10%;
 }
 
+.h-9 {
+  height: 9%;
+}
+
+.h-8 {
+  height: 8%;
+}
+
+.h-7 {
+  height: 7%;
+}
+
+.h-6 {
+  height: 6%;
+}
+
 .w-95 {
   width: 95%;
 }
 
+.w-90 {
+  width: 90%;
+}
+
 .w-45 {
   width: 45%;
+}
+
+.w-20 {
+  width: 20%;
+}
+
+.w-15 {
+  width: 15%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.bg-dark {
+  background-color: #131821 !important;
 }
 
 .main-content {

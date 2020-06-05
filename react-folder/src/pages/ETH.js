@@ -3,6 +3,8 @@ import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
 import { Container, Row, Col, Image, Button, Navbar, Nav, Form } from 'react-bootstrap';
 import { Logo, ETH_logo } from '../img';
+import UserService from '../services/user.service';
+import ExchangeService from '../services/exchange.service';
 import { CardBody, Label } from 'reactstrap';
 import CarouselCaption from 'react-bootstrap/CarouselCaption';
 
@@ -12,13 +14,8 @@ export default class btc extends React.Component {
         super(props);
 
         this.state = {
-            currentUser: AuthService.getCurrentUser(),
-            currentBTC: null,
-            percentChange1h: null,
-            percentChange24h: null,
-            percentChange7d: null,
-            chartWidth: 0,
-            chartHeight: 0,
+            currentUser: UserService.getCurrentUser(),
+            mainHeight: 0
         };
     }
 
@@ -38,7 +35,27 @@ export default class btc extends React.Component {
         window.removeEventListener('resize', this.resize);
     }
 
+    onChangeCoin() {
+        document.getElementById('inputUSD').value = (240 * document.getElementById('inputCoin').value).toFixed(2)
+    }
+
+    onChangeUSD() {
+        document.getElementById('inputCoin').value = (1 / 240 * document.getElementById('inputUSD').value).toFixed(5)
+    }
+
+    handleLogout(e) {
+        e.preventDefault();
+        AuthService.logout();
+        window.location.reload();
+    };
+
     render() {
+        const { currentUser } = this.state;
+        if (currentUser == null) {
+            this.props.history.push("/login");
+            window.location.reload();
+        }
+
         return (
             <Container fluid>
 
@@ -49,15 +66,14 @@ export default class btc extends React.Component {
                         <Button href='./ranking' className='w-15 ml-4'>Ranking</Button>
                         <Button href='./about' className='w-15 ml-4'>About</Button>
                     </Nav>
-                    <Navbar.Text className='text-light mr-2'>Your</Navbar.Text>
-                    <Navbar.Text className='text-light mr-3'>Balance:</Navbar.Text>
-                    <Navbar.Text className='text-light mr-4'>$154,986.92</Navbar.Text>
-                    <Button className='w-15'>Logout</Button>
+                    <Navbar.Text className='w-20 text-light mr-2'>Your Balance:</Navbar.Text>
+                    <Navbar.Text className='text-light mr-4 ml-n4'>$134567</Navbar.Text>
+                    <Button className='w-15' onClick={this.handleLogout}>Logout</Button>
                 </Navbar>
 
                 <Row style={{ height: 'calc(100vh - 76px)', marginBottom: '0px', margin: '0', padding: '0' }}>
 
-                    <Col md='8' className=' h-100 m-0 p-0 pb-2 pl-2'>
+                    <Col md='8' className='h-100 m-0 p-0 pb-2 pl-2 bg-dark'>
                         <div className='rounded w-100 h-100' style={{ border: '2px solid grey' }}>
                             <TradingViewWidget
                                 autosize
@@ -74,19 +90,19 @@ export default class btc extends React.Component {
                     </Col>
 
                     <Col md='4' className='h-100 m-0 p-0 pr-2 pb-2 pl-2'>
-                        <div className='h-45 rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', border: '2px solid grey' }}>
-                            <div className='h-100 w-25 bg-secondary d-flex justify-content-center align-items-center'>
-                                <img src={ETH_logo} className='w-100'></img>
+                        <div className='h-30 rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', border: '2px solid grey' }}>
+                            <div className='h-100 w-25 d-flex justify-content-center align-items-center'>
+                                <img src={ETH_logo} className='h-100'></img>
                             </div>
                             <div className='h-100 w-75 d-flex justify-content-center align-items-center'>
                                 <div className='w-95 text-center'>
-                                    <h4>Ethereum</h4>
+                                    <h4>Ethereum <a className='text-secondary'>ETH</a></h4>
                                     Ethereum is the second largest cryptocurrency platform by market capitalization, behind Bitcoin.
                                     It is a decentralized open source blockchain featuring smart contract functionality.
                                 </div>
                             </div>
                         </div>
-                        <div className='h-15 pt-2'>
+                        <div className='h-30 pt-2'>
                             <div className='rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
                                 <h3>Owned: 3.456x ($756.56)</h3>
                             </div>
@@ -94,21 +110,25 @@ export default class btc extends React.Component {
                         <div className='h-40 pt-2'>
                             <div className='rounded' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
                                 <Form className='w-100 h-100'>
-                                    <div className='h-35 text-center'>
-                                        <h3>Current Value</h3>
+                                    <div className='h-35 text-center pt-2'>
+                                        <h3>Current Price</h3>
                                         <h2><b>$240.09</b></h2>
                                     </div>
-                                    <div className='h-10 d-flex justify-content-center'>
+                                    <div className='h-15 d-flex justify-content-center pt-2'>
                                         <Form.Label className='text-center w-45 d-inline mr-3'>Amount ETH</Form.Label>
                                         <Form.Label className='text-center w-45 d-inline'>Price USD</Form.Label>
                                     </div>
                                     <div className='h-20 d-flex justify-content-center'>
-                                        <Form.Control className='w-45 d-inline mr-3' type='number'></Form.Control>
-                                        <Form.Control className='w-45 d-inline' type='number'></Form.Control>
+                                        <Form.Control id='inputCoin' className='w-45 d-inline mr-3' onChange={this.onChangeCoin} placeholder='0.00000' type='number'></Form.Control>
+                                        <Form.Control id='inputUSD' className='w-45 d-inline' onChange={this.onChangeUSD} placeholder='0.00' type='number'></Form.Control>
                                     </div>
-                                    <div className='h-35'>
-                                        <Button className='w-50 h-100 bg-success border-0 rounded-0'>Buy</Button>
-                                        <Button className='w-50 h-100 bg-danger border-0 rounded-0'>Sell</Button>
+                                    <div className='h-30 d-flex justify-content-center'>
+                                        <div className='w-50 h-100 d-flex justify-content-center'>
+                                            <Button className='w-95 h-90 bg-success border-0'><h4 className='m-auto'>Buy</h4></Button>
+                                        </div>
+                                        <div className='w-50 h-100 d-flex justify-content-center'>
+                                            <Button className='w-95 h-90 bg-danger border-0'><h4 className='m-auto'>Sell</h4></Button>
+                                        </div>
                                     </div>
                                 </Form>
                             </div>

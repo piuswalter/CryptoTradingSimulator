@@ -4,17 +4,9 @@ import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
 import ExchangeService from '../services/exchange.service';
 
-import "../assets/css/black-dashboard-react.css";
-import "../assets/demo/demo.css";
-import "../assets/css/nucleo-icons.css";
-import "../assets/css/dashboard.css";
-
 // reactstrap components
-import {
-	Row,
-	Col,
-	Nav
-} from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card } from 'react-bootstrap';
+import { Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
 
 export default class Dashboard extends React.Component {
 	constructor(props) {
@@ -64,103 +56,117 @@ export default class Dashboard extends React.Component {
 	}
 
 	updateWindowDimensions() {
-		this.setState({
-			chartWidth: document.getElementById("chartContainer").offsetWidth,
-			//chartHeight: document.getElementById("chartContainer").offsetHeight
-		});
 	}
-	
+
 	handleLogout(e) {
 		e.preventDefault();
-
 		AuthService.logout();
-		this.props.history.push("/login");
 		window.location.reload();
 	};
 
 	render() {
 		const { currentUser } = this.state;
-		
+
 		if (currentUser == null) {
 			this.props.history.push("/login");
 			window.location.reload();
 		}
 
 		return (
-			<>
-				<div id="body">
-					<Row>
-						<Col>
-							<Nav>
-								<Nav.Item>
-									<Nav.Link>Home</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link>Ranking</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link>About</Nav.Link>
-								</Nav.Item>
-								<Nav.Item className="ml-auto">
-									<Nav.Link onClick={this.handleLogout}>Sign Out</Nav.Link>
-								</Nav.Item>
-							</Nav>
-						</Col>
-					</Row>
-					<Row>
-						<Col><div className="placeholder"></div></Col>
-					</Row>
-					<Row>
-						<Col sm={8} id = "chartContainer">
-							<TradingViewWidget
-								width={this.state.chartWidth}
-								height={this.state.chartHeight}
-								symbol="BTCUSD"
-								interval="30"
-								timezone="Europe/Berlin"
-								theme="dark"
-								style="3"
-								locale="de_DE"
-								toolbar_bg="#f1f3f6"
-								hide_top_toolbar
-							/>
-						</Col>
-						<Col sm={4}>
-							<Row>
-								<Col>
-									<div className="panel panel-top">
-										<h3>Logged in as <strong>{currentUser.username}</strong></h3>
-										<br />
-										<p>
-											<strong>Token:</strong>{" "}
-											{currentUser.accessToken.substring(0, 20)} ...{" "}
-											{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-										</p>
-										<p>
-											<strong>Id:</strong>{" "}
-											{currentUser.id}
-										</p>
-										<p>
-											<strong>Email:</strong>{" "}
-											{currentUser.email}
-										</p>
-									</div>
-								</Col>
-							</Row>
-							<Row>
-								<Col>
-									<div className="panel">
-										Current BTC price: {this.state.currentBTC} USD<br />
-										BTC changed 1h: {this.state.percentChange1h} %<br />
-										BTC changed 24h: {this.state.percentChange24h} %<br />
-										BTC changed 7d: {this.state.percentChange7d} %
-									</div>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</div>
-			</>
+			<Container fluid>
+
+				<Navbar className='z-100' id='navbar'>
+					<Navbar.Brand href='./'><img src={Logo} alt='PaperCoin' /></Navbar.Brand>
+					<Nav className="mr-auto w-100">
+						<Button href='./dashboard' className='w-15 ml-4'>Dashboard</Button>
+						<Button href='./ranking' className='w-15 ml-4'>Ranking</Button>
+						<Button href='./about' className='w-15 ml-4'>About</Button>
+					</Nav>
+					<Navbar.Text className='w-20 text-light mr-2'>Your Balance:</Navbar.Text>
+					<Navbar.Text className='text-light mr-4 ml-n4'>$134567</Navbar.Text>
+					<Button className='w-15' onClick={this.handleLogout}>Logout</Button>
+				</Navbar>
+
+				<Row style={{ height: 'calc(100vh - 76px)', marginBottom: '0px', margin: '0', padding: '0' }}>
+					<Col md='8' className='h-100 m-0 p-0 pb-2 pl-2'>
+						<div className='rounded w-100 h-100 bg-dark' style={{ border: '2px solid grey' }}>
+							Portfolio
+						</div>
+					</Col>
+					<Col md='4' className='h-100 m-0 p-0 pb-2 pl-2'>
+						<div className='rounded w-100 h-100' style={{ border: '2px solid grey' }}>
+							<Card className='h-100 bg-dark'>
+								<Card.Body className='h-12'>
+									<Card.Title className='text-center'><h3>Available Coins</h3></Card.Title>
+								</Card.Body>
+								<ListGroup variant='flush' className='h-88'>
+									<ListGroup.Item action href='/btc' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>01 </div>
+										<div className='d-inline'><img id='btc_logo' src={BTC_logo} className='w-10'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin <a className='text-secondary'>BTC</a></div>
+										<div className='h5 d-inline float-right'>$9207.45</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/eth' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>02 </div>
+										<div className='d-inline'><img src={ETH_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Ethereum <a className='text-secondary'>ETH</a></div>
+										<div className='h5 d-inline float-right'>$240.23</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/usdt' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>03 </div>
+										<div className='d-inline'><img src={USDT_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Tether <a className='text-secondary'>USDT</a></div>
+										<div className='h5 d-inline float-right'>$1.03</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/xrp' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>04 </div>
+										<div className='d-inline'><img src={XRP_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> XRP <a className='text-secondary'>XRP</a></div>
+										<div className='h5 d-inline float-right'>$0.21</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/bch' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>05 </div>
+										<div className='d-inline'><img src={BCH_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin Cash <a className='text-secondary'>BCH</a></div>
+										<div className='h5 d-inline float-right'>$230.89</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/bsv' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>06 </div>
+										<div className='d-inline'><img src={BSV_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin SV <a className='text-secondary'>BSV</a></div>
+										<div className='h5 d-inline float-right'>$195.45</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/ltc' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>07 </div>
+										<div className='d-inline'><img src={LTC_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Litecoin <a className='text-secondary'>LTC</a></div>
+										<div className='h5 d-inline float-right'>$0.21</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/bnb' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>08 </div>
+										<div className='d-inline'><img src={BNB_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Binance Coin <a className='text-secondary'>BNB</a></div>
+										<div className='h5 d-inline float-right'>$0.21</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/eos' className='h-9 text-light bg-dark'>
+										<div className='h5 d-inline'>09 </div>
+										<div className='d-inline'><img src={EOS_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> EOS <a className='text-secondary'>EOS</a></div>
+										<div className='h5 d-inline float-right'>$0.21</div>
+									</ListGroup.Item>
+									<ListGroup.Item action href='/xtz' className='h-9 text-light bg-dark'>
+										<div className='h5 w-10 d-inline'>10 </div>
+										<div className='d-inline'><img src={XTZ_logo} className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Tezos <a className='text-secondary'>XTZ</a></div>
+										<div className='h5 d-inline float-right'>$0.21</div>
+									</ListGroup.Item>
+									<ListGroup.Item className='h-10 d-flex justify-content-center align-items-center bg-dark'>more coins coming soon...</ListGroup.Item>
+								</ListGroup>
+							</Card>
+						</div>
+					</Col>
+				</Row>
+			</Container >
 		);
 	}
 }
