@@ -171,35 +171,48 @@ export default class btc extends React.Component {
                     </Col>
 
                     <Col md='4' className='h-100 m-0 p-0 pr-2 pb-2 pl-2'>
-                        <div className='h-30 rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', border: '2px solid grey' }}>
+                        <div className='h-27_5 rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', border: '2px solid grey' }}>
                             <div className='h-100 w-25 d-flex justify-content-center align-items-center'>
                                 <img src={ETH_logo} className='h-100'></img>
                             </div>
                             <div className='h-100 w-75 d-flex justify-content-center align-items-center'>
                                 <div className='w-95 text-center'>
-                                    <h4>Ethereum <a className='text-secondary'>ETH</a></h4>
+                                    <h5>Ethereum <a className='text-secondary'>ETH</a></h5>
                                     Ethereum is the second largest cryptocurrency platform by market capitalization, behind Bitcoin.
                                     It is a decentralized open source blockchain featuring smart contract functionality.
                                 </div>
                             </div>
                         </div>
-                        <div className='h-30 pt-2'>
-                            <div className='rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
-                                <h3>Owned: {currentETH}x (${(240 * currentETH).toFixed(2)})</h3>
+                        <div className='h-14_5 pt-2'>
+                            <div className='rounded text-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
+                                <h5 className='w-100 mt-2'>ETH in your Portfolio</h5>
+                                <Table striped bordered hover variant="dark" className="w-100">
+                                    <tr><td>{currentETH}x</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
+                                </Table>
                             </div>
                         </div>
-                        <div className='h-40 pt-2'>
+                        <div className='h-28 pt-2'>
+                            <div className='rounded text-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
+                                <h5 className='w-100 mt-2'>Performance</h5>
+                                <Table striped bordered hover variant="dark" className="w-100">
+                                    <tr><td>Change7d</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
+                                    <tr><td>Change24h</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
+                                    <tr><td>Change1h</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
+                                </Table>
+                            </div>
+                        </div>
+                        <div className='h-30 pt-2'>
                             <div className='rounded' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
                                 <Form className='w-100 h-100'>
-                                    <div className='h-35 text-center pt-2'>
-                                        <h3>Current Price</h3>
-                                        <h2><b>$240.09</b></h2>
+                                    <div className='h-30 text-center pt-1'>
+                                        <h5>Current Price</h5>
+                                        <h4><b>$240.09</b></h4>
                                     </div>
-                                    <div className='h-15 d-flex justify-content-center pt-2'>
+                                    <div className='h-15 d-flex justify-content-center'>
                                         <Form.Label className='text-center w-45 d-inline mr-3'>Amount ETH</Form.Label>
                                         <Form.Label className='text-center w-45 d-inline'>Price USD</Form.Label>
                                     </div>
-                                    <div className='h-20 d-flex justify-content-center'>
+                                    <div className='h-25 d-flex justify-content-center'>
                                         <Form.Control id='inputCoin' className='w-45 d-inline mr-3' onChange={this.onChangeCoin} placeholder='0.00000' type='number'></Form.Control>
                                         <Form.Control id='inputUSD' className='w-45 d-inline' onChange={this.onChangeUSD} placeholder='0.00' type='number'></Form.Control>
                                     </div>
