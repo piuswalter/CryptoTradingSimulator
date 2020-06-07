@@ -15,11 +15,12 @@ module.exports = function(app) {
     app.get("/data/test/user", [authJwt.verifyToken], controller.userBoard);
 
     app.get("/exchange", exchange.notDefined);
-    app.get("/exchange/price/", exchange.notDefined);
+    app.get("/exchange/price", exchange.notDefined);
     app.get("/exchange/price/:coin", function (req, res) {
       exchange.getCurrentPriceString(req, res)
     });
-
-
-
+    app.get("/exchange/information", exchange.notDefined);
+    app.get("/exchange/information/:coin", function (req, res) {
+        exchange.getInformationString(req, res)
+    });
 };

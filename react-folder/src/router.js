@@ -13,7 +13,7 @@ export default
             <Route path="/register" component={Register} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/btc" component={BTC} />
-            <Route path="/eth" component={ETH} />
+            <Route path="/:coin" component={ETH} />
             <Route component={NotFound} />
         </Switch>
     </Router>;

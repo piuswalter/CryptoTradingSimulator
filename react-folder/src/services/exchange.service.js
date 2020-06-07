@@ -3,54 +3,27 @@ import Axios from "axios";
 const API_URL = "http://localhost:8080/exchange";
 
 class ExchangeService {
-    getCurrentPrice(paper) {
+    getCurrentPrice(coin) {
         return Axios
-            .get(API_URL + "/all")
+            .get(API_URL + "/price/" + coin)
             .then(response => {
-                localStorage.setItem("currentBTC", JSON.stringify(response.data[0].price_usd));
+                localStorage.setItem("coin", JSON.stringify(response.data));
 
-                return JSON.parse(localStorage.getItem('currentBTC'));;
+                return JSON.parse(localStorage.getItem('coin'));;
             });
     }
 
-    getPercentChange(timerange) {
-        if (timerange === 1) {
-            return Axios
-                .get(API_URL + "/all")
-                .then(response => {
-                    localStorage.setItem("percentChange1h", JSON.stringify(response.data[0].percent_change_1h));
-
-                    return JSON.parse(localStorage.getItem('percentChange1h'));;
-                });
-        } else if (timerange === 24) {
-            return Axios
-                .get(API_URL + "/all")
-                .then(response => {
-                    localStorage.setItem("percentChange24h", JSON.stringify(response.data[0].percent_change_24h));
-
-                    return JSON.parse(localStorage.getItem('percentChange24h'));;
-                });
-        } else {
-            return Axios
-                .get(API_URL + "/all")
-                .then(response => {
-                    localStorage.setItem("percentChange7d", JSON.stringify(response.data[0].percent_change_7d));
-
-                    return JSON.parse(localStorage.getItem('percentChange7d'));;
-                });
-        }
-    }
-
-    /*getCurrentPrice() {
-        return Axios.get(API_URL + "/price")
+    getPercentChange(coin) {
+        return Axios
+            .get(API_URL + "/information/" + coin)
             .then(response => {
-                alert("service: " + response.data)
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
+                localStorage.setItem("percentChangeHour", JSON.stringify(response.data.percent_change_1h).replace("\"", "").replace("\"", ""));
+                localStorage.setItem("percentChangeDay", JSON.stringify(response.data.percent_change_24h).replace("\"", "").replace("\"", ""));
+                localStorage.setItem("percentChangeWeek", JSON.stringify(response.data.percent_change_7d).replace("\"", "").replace("\"", ""));
+
+                return { "hour": localStorage.getItem("percentChangeHour"), "day": localStorage.getItem("percentChangeDay"), "week": localStorage.getItem("percentChangeWeek") }
             });
-    }*/
+    }
 }
 
 export default new ExchangeService();

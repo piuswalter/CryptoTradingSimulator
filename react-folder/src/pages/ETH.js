@@ -16,17 +16,21 @@ export default class btc extends React.Component {
         this.getBalance = this.getBalance.bind(this);
         this.handleBuy = this.handleBuy.bind(this);
         this.handleSell = this.handleSell.bind(this);
+        this.getNameFromSymbol = this.getNameFromSymbol.bind(this);
 
         this.state = {
+            coin: this.getNameFromSymbol(this.props.match.params.coin),
             currentUser: UserService.getCurrentUser(),
             mainHeight: 0,
-            currenUSD: 0,
+            currentUSD: 0,
             currentETH: 0,
+            price: 0,
+            changeH: 0,
+            changeD: 0,
+            changeW: 0,
             message: ""
         };
     }
-
-
 
     updateWindowDimension() {
         this.setState({
@@ -39,10 +43,27 @@ export default class btc extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.resize);
         this.getBalance();
+        this.getAPIData(this.state.coin);
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.resize);
+    }
+
+    getNameFromSymbol(symbol) {
+        const symbols = {
+            "btc": "bitcoin",
+            "eth": "ethereum",
+            "usdt": "tether",
+            "xrp": "xrp",
+            "bch": "bitcoinCash",
+            "bsv": "bitcoinSV",
+            "ltc": "litecoin",
+            "bnb": "binanceCoin",
+            "eos": "eos",
+            "xtz": "tezos"
+        }
+        return symbols[symbol];
     }
 
     onChangeCoin() {
@@ -72,6 +93,17 @@ export default class btc extends React.Component {
                     message: resMessage
                 })
             })
+    }
+
+    getAPIData(coin) {
+        ExchangeService.getCurrentPrice(coin).then((response) => this.setState({
+            price: response
+        }));
+        ExchangeService.getPercentChange(coin).then((response) => this.setState({
+            changeH: response.hour,
+            changeD: response.day,
+            changeW: response.week
+        }));
     }
 
     handleBuy(e) {
@@ -136,6 +168,8 @@ export default class btc extends React.Component {
         const { currentETH } = this.state;
         const { coinsBought } = this.state;
         const { coinsSold } = this.state;
+        const { price } = this.state;
+        const { changeH, changeD, changeW, coin } = this.state;
 
         return (
             <Container fluid>
@@ -195,9 +229,9 @@ export default class btc extends React.Component {
                             <div className='rounded text-center' style={{ backgroundColor: '#131821', height: '100%', border: '2px solid grey' }}>
                                 <h5 className='w-100 mt-2'>Performance</h5>
                                 <Table striped bordered hover variant="dark" className="w-100">
-                                    <tr><td>Change7d</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
-                                    <tr><td>Change24h</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
-                                    <tr><td>Change1h</td><td> ${(240 * currentETH).toFixed(2)}</td></tr>
+                                    <tr><td>Change hour</td><td>{changeH} %</td></tr>
+                                    <tr><td>Change day</td><td>{changeD} %</td></tr>
+                                    <tr><td>Change week</td><td>{changeW} %</td></tr>
                                 </Table>
                             </div>
                         </div>
@@ -206,7 +240,7 @@ export default class btc extends React.Component {
                                 <Form className='w-100 h-100'>
                                     <div className='h-30 text-center pt-1'>
                                         <h5>Current Price</h5>
-                                        <h4><b>$240.09</b></h4>
+                                        <h4><b>$ {price}</b></h4>
                                     </div>
                                     <div className='h-15 d-flex justify-content-center'>
                                         <Form.Label className='text-center w-45 d-inline mr-3'>Amount ETH</Form.Label>
