@@ -3,7 +3,7 @@ import React from "react";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 
 //Pages
-import { LandingPage, Login, Register, Dashboard, BTC, ETH, NotFound } from './pages';
+import { LandingPage, Login, Register, Dashboard, Coin, NotFound } from './pages';
 
 export default
     <Router>
@@ -12,8 +12,7 @@ export default
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/btc" component={BTC} />
-            <Route path="/:coin" component={ETH} />
+            <Route path="/:coin" component={Coin} />
             <Route component={NotFound} />
         </Switch>
     </Router>;

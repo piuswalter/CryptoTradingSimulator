@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, ProgressBar, Alert } from 'react-bootstrap';
-import AuthService from '../services/auth.service'
+import { AuthService } from '../services'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
 //Component Register

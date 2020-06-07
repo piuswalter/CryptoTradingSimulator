@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthService from '../services/auth.service'
+import { AuthService } from '../services'
 import { Container, Row, Col, Image, Button, Navbar } from 'react-bootstrap';
 import { Wave, Portfolio, Logo } from '../img'
 
@@ -22,13 +22,13 @@ export default class LandingPage extends React.Component {
 
         return (
             <Container fluid>
-    
+
                 <Image src={Wave} className='position-fixed h-100'></Image>
-    
+
                 <Navbar className='z-100'>
                     <Navbar.Brand href='./'><img src={Logo} alt='PaperCoin' /></Navbar.Brand>
                 </Navbar>
-    
+
                 <Row className='main-content'>
                     <Col className='d-flex' style={{ pointerEvents: 'none' }}>
                         <Image src={Portfolio} className='mx-auto my-auto h-60' fluid></Image>
@@ -41,7 +41,7 @@ export default class LandingPage extends React.Component {
                         </div>
                     </Col>
                 </Row>
-    
+
             </Container >
         )
     }

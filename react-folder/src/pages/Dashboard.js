@@ -2,8 +2,7 @@ import React from "react";
 
 import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
-import UserService from '../services/user.service';
-import ExchangeService from '../services/exchange.service';
+import { UserService, ExchangeService } from '../services';
 
 // reactstrap components
 import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card } from 'react-bootstrap';

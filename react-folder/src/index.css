@@ -121,6 +121,14 @@ body {
   background-color: #131821 !important;
 }
 
+.bg-green {
+  background-color: #28A745 !important;
+}
+
+.bg-red {
+  background-color: #EF534F !important;
+}
+
 .main-content {
   width: 100vw;
   height: 100vh;
