@@ -170,7 +170,8 @@ exports.sell = (req, res) => {
 
             res.status(200).send({
                 balance: user.balance+parseInt(req.body.value),
-                newCoinBalance: req.coinBalance-coinsSold
+                newCoinBalance: req.coinBalance-coinsSold,
+                coinsSold: coinsSold
 
             });
         });
