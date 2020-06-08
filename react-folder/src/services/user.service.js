@@ -22,7 +22,7 @@ class UserService {
                     localStorage.setItem("bitcoinSV", JSON.stringify(response.data.bitcoinSV));
                     localStorage.setItem("litecoin", JSON.stringify(response.data.litecoin));
                     localStorage.setItem("eos", JSON.stringify(response.data.eos));
-                    localStorage.setItem("binanceCoin", JSON.stringify(response.data.binancecoin));
+                    localStorage.setItem("binancecoin", JSON.stringify(response.data.binancecoin));
                     localStorage.setItem("tezos", JSON.stringify(response.data.tezos));
                 }
 

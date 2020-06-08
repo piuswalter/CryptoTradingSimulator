@@ -94,7 +94,7 @@ export default class Coin extends React.Component {
             "bch": "bitcoinCash",
             "bsv": "bitcoinSV",
             "ltc": "litecoin",
-            "bnb": "binanceCoin",
+            "bnb": "binancecoin",
             "eos": "eos",
             "xtz": "tezos"
         }
@@ -214,7 +214,6 @@ export default class Coin extends React.Component {
                     <Navbar.Brand href='./'><img src={Logo} alt='PaperCoin' /></Navbar.Brand>
                     <Nav className="mr-auto w-100">
                         <Button href='./dashboard' className='w-15 ml-4'>Dashboard</Button>
-                        <Button href='./ranking' className='w-15 ml-4'>Ranking</Button>
                         <Button href='./about' className='w-15 ml-4'>About</Button>
                     </Nav>
                     <Navbar.Text className='w-20 text-light mr-2'>Your Balance:</Navbar.Text>
