@@ -6,7 +6,7 @@ import { UserService, ExchangeService } from '../services';
 import { PieChart } from 'react-minimal-pie-chart';
 
 // reactstrap components
-import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card, Overlay, Tooltip } from 'react-bootstrap';
 import { Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
 
 export default class Dashboard extends React.Component {
@@ -14,6 +14,7 @@ export default class Dashboard extends React.Component {
 		super(props);
 
 		this.getBalance = this.getBalance.bind(this);
+		this.handleMouseOver = this.handleMouseOver.bind(this);
 
 		this.state = {
 			currentUser: AuthService.getCurrentUser(),
@@ -31,6 +32,7 @@ export default class Dashboard extends React.Component {
 				{ title: 'Tezos', value: 0, color: '#2c7df7' },
 			],
 			prices: new Map(),
+			visibility: ['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'],
 			message: ""
 		};
 
@@ -114,7 +116,9 @@ export default class Dashboard extends React.Component {
 
 	handleMouseOver(e) {
 		e.preventDefault();
-
+		this.setState({
+			visibility: 'visible'
+		});
 	}
 
 	handleLogout(e) {
@@ -157,11 +161,20 @@ export default class Dashboard extends React.Component {
 								labelStyle={(index) => ({
 									fill: portfolio[index].color,
 									fontSize: '5px',
-									visibility: 0,
+									visibility: this.state.visibility[index]
 								})}
 								radius={42}
 								labelPosition={112}
-							/>
+								onMouseOver={(_, index) => {
+									console.log(index)
+									this.state.visibility[index] = 'visible'
+									this.forceUpdate()
+								}}
+								onMouseOut={(_, index) => {
+									console.log(index)
+									this.state.visibility[index] = 'hidden'
+									this.forceUpdate()
+								}}
 							/>
 						</div>
 					</Col>
