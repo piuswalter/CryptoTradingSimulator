@@ -185,7 +185,7 @@ export default class Coin extends React.Component {
             this.getBalance();
             this.setState({
                 sellSuccess: true,
-                coinsSold: response.coinsSold,
+                coinsSold: response.coinsSold.toFixed(5),
             });
             console.log(response);
         },
