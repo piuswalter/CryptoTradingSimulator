@@ -74,7 +74,7 @@ export default class Dashboard extends React.Component {
                                 Please note, that this is a <b className='text-primary'>prototype</b>, which means certain processes are yet to be optimised. Nevertheless, we are proud to present a <b className='text-primary'>fully functional papertrading experience</b> with more than 10 supported currencies - and more to come.
                                 <br></br><br></br>
                                 How it works:
-                                Users will receive their initial start-off funds of <b className='text-primary'>1,000,000 dollars</b> right after registration. From thereon you are free to invest in our supported cryptocurrencies by selling or buying at your leisure. Strategic decisions are supported by our individual trading charts and exchange history. By practising with our simulation, you are able to gain vital knowledge and try out your own strategy first-hand, before even investing a cent of real money.
+                                Users will receive their initial start-off funds of <b className='text-primary'>100,000 dollars</b> right after registration. From thereon you are free to invest in our supported cryptocurrencies by selling or buying at your leisure. Strategic decisions are supported by our individual trading charts and exchange history. By practising with our simulation, you are able to gain vital knowledge and try out your own strategy first-hand, before even investing a cent of real money.
                                 <br></br><br></br>
                                 If you face any difficulties with our web app, please do not hesitate to contact our lead developers directly:
                                 <br></br><br></br>

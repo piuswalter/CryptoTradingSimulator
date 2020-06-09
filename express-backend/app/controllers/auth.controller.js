@@ -11,7 +11,7 @@ exports.register = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        balance: 1000000,
+        balance: 10000,
         bitcoin: 0,
         dash: 0,
         monero: 0,
