@@ -2,16 +2,7 @@ const db = require("../mongodb-models");
 const User = db.user;
 const exchange = require("../middlewares/exchange");
 
-
-
-exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-};
-
-exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
-};
-
+// Receives username from frontend and returns complete portfolio
 exports.getUserBalance = (req, res) => {
     User.findOne({
         username: req.body.username
@@ -44,6 +35,7 @@ exports.getUserBalance = (req, res) => {
         });
 };
 
+// Verifies if user has sufficient balance
 exports.verifyBalance = (req, res, next) => {
     User.findOne({
         username: req.body.username
@@ -61,6 +53,7 @@ exports.verifyBalance = (req, res, next) => {
         })
 };
 
+// Verifies if user has sufficient amount of coins to sell
 exports.verifyCoins = (req, res, next) => {
     User.findOne({
         username: req.body.username
@@ -106,6 +99,7 @@ exports.verifyCoins = (req, res, next) => {
         })
 };
 
+// Receives a coin type and a us dollar value, writes new balances into database and returns new balance and amount of coins bought
 exports.buy = (req, res) => {
     const coin = req.body.coin;
     let coinsBought = 0.0;
@@ -177,6 +171,7 @@ exports.sell = (req, res) => {
         });
 };
 
+// Calculates the complete value of the users portfolio
 exports.getUserValue = (req, res) => {
     User.findOne({
         username: req.body.username
@@ -190,6 +185,8 @@ exports.getUserValue = (req, res) => {
             if (!user) {
                 return res.status(404).send({message: "User Not found."});
             }
+
+            // stores user portfolio into dictionary
             let userCoins = {
                 "bitcoin": user.bitcoin,
                 "dash": user.dash,

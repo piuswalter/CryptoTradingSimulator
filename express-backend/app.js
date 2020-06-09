@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dbConfig = require("./app/config/db.config.js")
+const dbConfig = require("./app/config/db.config.js");
 
 
 const app = express();
@@ -16,22 +16,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// define routes
-// require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const testRouter = require("./routes/testing-router");
+// require exchange service routes
+require('./routes/exchange.routes')(app);
 
-// check .env file within react folder
-
-// parse json requests
 app.use(bodyParser.json());
 
 // parse x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+// database connection
 const db = require("./app/mongodb-models");
 
 db.mongoose
@@ -49,7 +43,6 @@ db.mongoose
 
 
 // auth routes:
-
 const {verifyRegister}  = require("./app/middlewares");
 const { authJwt } = require("./app/middlewares");
 const controller = require("./app/controllers/auth.controller");
@@ -73,6 +66,8 @@ app.post(
 
 app.post("/auth/login", controller.login);
 
+// user endpoints with verifyToken and verifyBalance/coins middlewares
+
 app.post("/user/balance", [authJwt.verifyToken], user_controller.getUserBalance);
 
 app.post("/user/buy", [authJwt.verifyToken, user_controller.verifyBalance], user_controller.buy);
@@ -84,23 +79,16 @@ app.post("/user/value", [authJwt.verifyToken], user_controller.getUserValue);
 
 
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// test case:
-app.use("/testing-router", testRouter);
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

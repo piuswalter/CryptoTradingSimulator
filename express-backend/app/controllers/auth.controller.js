@@ -6,6 +6,7 @@ const User = db.user;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// Receives register request with username, email and password, writes user to database
 exports.register = (req, res) => {
     const user = new User({
         username: req.body.username,
@@ -42,6 +43,7 @@ exports.register = (req, res) => {
     });
 };
 
+// Receives username and password from frontend, validates and returns user id, username, email and JWT accesstoken
 exports.login = (req, res) => {
     User.findOne({
         username: req.body.username
@@ -80,9 +82,4 @@ exports.login = (req, res) => {
         });
 };
 
-exports.deleteTestUser = (req, res) => {
-    User.deleteOne({
-        username: "registrar1"
-    }, (err) => {})
-};
 

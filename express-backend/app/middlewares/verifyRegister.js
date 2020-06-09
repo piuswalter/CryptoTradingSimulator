@@ -1,6 +1,7 @@
 const db = require("../mongodb-models");
 const User = db.user;
 
+// Middleware ensures that username and email does not exist already
 checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username
     User.findOne({
