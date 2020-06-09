@@ -1,20 +1,24 @@
+// imports
 import React from "react";
-
-import AuthService from '../services/auth.service';
-import TradingViewWidget from 'react-tradingview-widget';
-import { UserService, ExchangeService } from '../services';
+import { UserService, ExchangeService, AuthService } from '../services';
 import { PieChart } from 'react-minimal-pie-chart';
-
-// reactstrap components
-import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card, Overlay, Tooltip } from 'react-bootstrap';
+import { Container, Row, Col, Button, Navbar, Nav, ListGroup, Card } from 'react-bootstrap';
 import { Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
 
+// component Dashboard
 export default class Dashboard extends React.Component {
+
+	/**
+	 * constructor of Dashboard
+	 * @param {*} props 
+	 */
 	constructor(props) {
+
 		super(props);
 
 		this.getBalance = this.getBalance.bind(this);
 		this.handleMouseOver = this.handleMouseOver.bind(this);
+		this.handleLogout = this.handleLogout.bind(this);
 
 		this.state = {
 			currentUser: AuthService.getCurrentUser(),
@@ -36,24 +40,19 @@ export default class Dashboard extends React.Component {
 			message: ""
 		};
 
-		this.handleLogout = this.handleLogout.bind(this);
-		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
+	/**
+	 * executes on mount
+	 */
 	componentDidMount() {
 		this.getUserValue();
 		this.getAPIData();
-		this.updateWindowDimensions();
-		window.addEventListener('resize', this.updateWindowDimensions);
 	}
 
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.updateWindowDimensions);
-	}
-
-	updateWindowDimensions() {
-	}
-
+	/**
+	 * gets the from backend
+	 */
 	getUserValue() {
 		UserService.getUserValue(this.state.currentUser.username).then(
 			response => {
@@ -68,6 +67,9 @@ export default class Dashboard extends React.Component {
 			})
 	}
 
+	/**
+	 * gets coin-prices from backend
+	 */
 	getAPIData() {
 		var pricesMap = new Map();
 		var n = 0;
@@ -78,7 +80,7 @@ export default class Dashboard extends React.Component {
 				pricesMap.set(coin, response)
 				n++;
 				console.log(n);
-				if (n = 10) {
+				if (n === 10) {
 					this.setState({ prices: pricesMap })
 					this.getBalance();
 				}
@@ -86,6 +88,9 @@ export default class Dashboard extends React.Component {
 		});
 	}
 
+	/**
+	 * gets portfolio from backend
+	 */
 	getBalance() {
 		UserService.getUserBalance(this.state.currentUser.username).then(
 			response => {
@@ -114,6 +119,10 @@ export default class Dashboard extends React.Component {
 			})
 	}
 
+	/**
+	 * handles mouse over piechart
+	 * @param {Event} e 
+	 */
 	handleMouseOver(e) {
 		e.preventDefault();
 		this.setState({
@@ -121,12 +130,19 @@ export default class Dashboard extends React.Component {
 		});
 	}
 
+	/**
+	 * handles logout
+	 * @param {Event} e 
+	 */
 	handleLogout(e) {
 		e.preventDefault();
 		AuthService.logout();
 		window.location.reload();
 	};
 
+	/**
+	 * render-function of Dashboard
+	 */
 	render() {
 		const { currentUser, currentUSD, userValue, portfolio, prices } = this.state;
 
@@ -167,11 +183,13 @@ export default class Dashboard extends React.Component {
 								labelPosition={112}
 								onMouseOver={(_, index) => {
 									console.log(index)
+									// eslint-disable-next-line
 									this.state.visibility[index] = 'visible'
 									this.forceUpdate()
 								}}
 								onMouseOut={(_, index) => {
 									console.log(index)
+									// eslint-disable-next-line
 									this.state.visibility[index] = 'hidden'
 									this.forceUpdate()
 								}}
@@ -187,62 +205,62 @@ export default class Dashboard extends React.Component {
 								<ListGroup variant='flush' className='h-88'>
 									<ListGroup.Item action href='/btc' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>01 </div>
-										<div className='d-inline'><img src={BTC_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Bitcoin <a className='text-secondary'>BTC</a></div>
+										<div className='d-inline'><img src={BTC_logo} alt='BTC logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin <span className='text-secondary'>BTC</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('bitcoin')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/eth' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>02 </div>
-										<div className='d-inline'><img src={ETH_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Ethereum <a className='text-secondary'>ETH</a></div>
+										<div className='d-inline'><img src={ETH_logo} alt='ETH logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Ethereum <span className='text-secondary'>ETH</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('ethereum')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/usdt' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>03 </div>
-										<div className='d-inline'><img src={USDT_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Tether <a className='text-secondary'>USDT</a></div>
+										<div className='d-inline'><img src={USDT_logo} alt='USDT logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Tether <span className='text-secondary'>USDT</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('tether')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/xrp' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>04 </div>
-										<div className='d-inline'><img src={XRP_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> XRP <a className='text-secondary'>XRP</a></div>
+										<div className='d-inline'><img src={XRP_logo} alt='XRP logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> XRP <span className='text-secondary'>XRP</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('xrp')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/bch' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>05 </div>
-										<div className='d-inline'><img src={BCH_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Bitcoin Cash <a className='text-secondary'>BCH</a></div>
+										<div className='d-inline'><img src={BCH_logo} alt='BCH logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin Cash <span className='text-secondary'>BCH</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('bitcoinCash')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/bsv' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>06 </div>
-										<div className='d-inline'><img src={BSV_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Bitcoin SV <a className='text-secondary'>BSV</a></div>
+										<div className='d-inline'><img src={BSV_logo} alt='BSV logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Bitcoin SV <span className='text-secondary'>BSV</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('bitcoinSV')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/ltc' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>07 </div>
-										<div className='d-inline'><img src={LTC_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Litecoin <a className='text-secondary'>LTC</a></div>
+										<div className='d-inline'><img src={LTC_logo} alt='LTC logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Litecoin <span className='text-secondary'>LTC</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('litecoin')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/bnb' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>08 </div>
-										<div className='d-inline'><img src={BNB_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Binance Coin <a className='text-secondary'>BNB</a></div>
+										<div className='d-inline'><img src={BNB_logo} alt='BNB logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Binance Coin <span className='text-secondary'>BNB</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('binancecoin')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/eos' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>09 </div>
-										<div className='d-inline'><img src={EOS_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> EOS <a className='text-secondary'>EOS</a></div>
+										<div className='d-inline'><img src={EOS_logo} alt='EOS logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> EOS <span className='text-secondary'>EOS</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('eos')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item action href='/xtz' className='h-9 text-light bg-dark'>
 										<div className='h5 w-10 d-inline'>10 </div>
-										<div className='d-inline'><img src={XTZ_logo} className='w-10 h-100'></img></div>
-										<div className='h5 w-10 d-inline'> Tezos <a className='text-secondary'>XTZ</a></div>
+										<div className='d-inline'><img src={XTZ_logo} alt='XTZ logo' className='w-10 h-100'></img></div>
+										<div className='h5 w-10 d-inline'> Tezos <span className='text-secondary'>XTZ</span></div>
 										<div className='h5 d-inline float-right'>${prices.get('tezos')}</div>
 									</ListGroup.Item>
 									<ListGroup.Item className='h-10 d-flex justify-content-center align-items-center bg-dark'>more coins coming soon...</ListGroup.Item>

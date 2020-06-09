@@ -1,13 +1,20 @@
+// imports
 import React from 'react';
 import AuthService from '../services/auth.service';
 import TradingViewWidget from 'react-tradingview-widget';
 import { Container, Row, Col, Image, Button, Navbar, Nav, Form, Modal, Table } from 'react-bootstrap';
-import { Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
+import { PageNotFound, Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
 import { UserService, ExchangeService } from '../services';
 
-//Component Coin
+// component Coin
 export default class Coin extends React.Component {
+
+    /**
+     * constructor of Coin
+     * @param {*} props 
+     */
     constructor(props) {
+
         super(props);
 
         this.handleBuy = this.handleBuy.bind(this);
@@ -20,31 +27,50 @@ export default class Coin extends React.Component {
             coin: this.getNameFromSymbol(this.props.match.params.coin),
             currentUser: UserService.getCurrentUser(),
         };
+
     }
 
+    /**
+     * executes on mount
+     */
     componentDidMount() {
-        window.addEventListener('resize', this.resize);
-        this.getBalance();
-        this.getAPIData(this.state.coin);
-        this.setTextAndLogo();
+        if (this.state.coin !== undefined) {
+            window.addEventListener('resize', this.resize);
+            this.getBalance();
+            this.getAPIData(this.state.coin);
+            this.setTextAndLogo();
+        }
     }
 
+    /**
+     * executes on update
+     */
     componentDidUpdate() {
         this.getBalance();
     }
 
+    /**
+     * executes on unmount
+     */
     componentWillUnmount() {
         window.removeEventListener('resize', this.resize);
     }
 
     resize = () => this.updateWindowDimension();
+    /** 
+     * resizes the chart
+    */
     updateWindowDimension() {
         this.setState({
             mainHeight: window.innerHeight - document.getElementById('navbar').offsetHeight,
         })
     }
 
+    /**
+     * sets text and logo dependent on coin
+     */
     setTextAndLogo() {
+
         var text;
         var logo;
         switch (this.state.symbol) {
@@ -78,14 +104,22 @@ export default class Coin extends React.Component {
             case 'xtz': text = `Tezos is a technology for deploying a blockchain capable of modifying its own set of rules with minimal 
                                 disruption to the network through an on-chain governance model.`;
                 logo = XTZ_logo; break;
+            default: text = undefined; logo = undefined; break;
         }
+
         this.setState({
             text: text,
             logo: logo
         })
+
     }
 
+    /**
+     * converts coin symbol to full name
+     * @param {String} symbol 
+     */
     getNameFromSymbol(symbol) {
+
         const symbols = {
             "btc": "bitcoin",
             "eth": "ethereum",
@@ -98,16 +132,22 @@ export default class Coin extends React.Component {
             "eos": "eos",
             "xtz": "tezos"
         }
+
         return symbols[symbol];
     }
 
+    /**
+     * gets balance of user
+     */
     getBalance() {
-        UserService.getUserBalance(this.state.currentUser.username).then((response) => {
-            this.setState({
-                currentUSD: response.balance.toFixed(2),
-                currentCoin: response[this.state.coin].toFixed(5)
-            })
-        },
+
+        UserService.getUserBalance(this.state.currentUser.username).then(
+            response => {
+                this.setState({
+                    currentUSD: response.balance.toFixed(2),
+                    currentCoin: response[this.state.coin].toFixed(5)
+                })
+            },
             error => {
                 const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                 this.setState({
@@ -116,54 +156,76 @@ export default class Coin extends React.Component {
             })
     }
 
+    /**
+     * gets coin price
+     * @param {String} coin 
+     */
     getAPIData(coin) {
-        ExchangeService.getCurrentPrice(coin).then((response) => {
-            this.setState({
-                price: response
-            })
-        });
-        ExchangeService.getPercentChange(coin).then((response) => {
-            this.setState({
-                changeH: response.hour,
-                changeD: response.day,
-                changeW: response.week
+        ExchangeService.getCurrentPrice(coin).then(
+            response => {
+                this.setState({
+                    price: response
+                })
             });
-            (response.hour >= 0) ? document.getElementById('changeH').style.color = '#28A745' : document.getElementById('changeH').style.color = '#EF534F';
-            (response.day >= 0) ? document.getElementById('changeD').style.color = '#28A745' : document.getElementById('changeD').style.color = '#EF534F';
-            (response.week >= 0) ? document.getElementById('changeW').style.color = '#28A745' : document.getElementById('changeW').style.color = '#EF534F';
-        });
+        ExchangeService.getPercentChange(coin).then(
+            response => {
+                this.setState({
+                    changeH: response.hour,
+                    changeD: response.day,
+                    changeW: response.week
+                });
+                (response.hour >= 0) ? document.getElementById('changeH').style.color = '#28A745' : document.getElementById('changeH').style.color = '#EF534F';
+                (response.day >= 0) ? document.getElementById('changeD').style.color = '#28A745' : document.getElementById('changeD').style.color = '#EF534F';
+                (response.week >= 0) ? document.getElementById('changeW').style.color = '#28A745' : document.getElementById('changeW').style.color = '#EF534F';
+            });
     }
 
+    /**
+     * handles changes in coin input
+     */
     onChangeCoin() {
         document.getElementById('inputUSD').value = (this.state.price * document.getElementById('inputCoin').value).toFixed(2);
     }
 
+    /**
+     * handles changes in USD input
+     */
     onChangeUSD() {
         document.getElementById('inputCoin').value = (1 / this.state.price * document.getElementById('inputUSD').value).toFixed(5);
     }
 
+    /**
+     * handles logout
+     * @param {Event} e 
+     */
     handleLogout(e) {
         e.preventDefault();
         AuthService.logout();
         window.location.reload();
     };
 
+    /**
+     * handles buy
+     * @param {Event} e 
+     */
     handleBuy(e) {
+
         e.preventDefault();
 
         this.setState({
             loading: true
         });
 
-        UserService.buy(this.state.currentUser.username, this.state.coin, document.getElementById('inputUSD').value).then((response) => {
-            this.getBalance();
-            this.setState({
-                buySuccess: true,
-                coinsBought: response.coinsBought.toFixed(5),
-                buyModal: true
-            });
-            console.log(response);
-        },
+        UserService.buy(this.state.currentUser.username, this.state.coin, document.getElementById('inputUSD').value).then(
+            response => {
+                this.getBalance();
+                this.setState({
+                    buySuccess: true,
+                    coinsBought: response.coinsBought.toFixed(5),
+                    buyModal: true
+                });
+                console.log(response);
+            },
             error => {
                 const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                 this.setState({
@@ -174,21 +236,27 @@ export default class Coin extends React.Component {
 
     }
 
+    /**
+     * handles sell
+     * @param {Event} e 
+     */
     handleSell(e) {
+
         e.preventDefault();
 
         this.setState({
             loading: true
         });
 
-        UserService.sell(this.state.currentUser.username, this.state.coin, document.getElementById('inputUSD').value).then((response) => {
-            this.getBalance();
-            this.setState({
-                sellSuccess: true,
-                coinsSold: response.coinsSold.toFixed(5),
-            });
-            console.log(response);
-        },
+        UserService.sell(this.state.currentUser.username, this.state.coin, document.getElementById('inputUSD').value).then(
+            response => {
+                this.getBalance();
+                this.setState({
+                    sellSuccess: true,
+                    coinsSold: response.coinsSold.toFixed(5),
+                });
+                console.log(response);
+            },
             error => {
                 const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                 this.setState({
@@ -199,12 +267,32 @@ export default class Coin extends React.Component {
 
     }
 
+    /**
+     * render-function of Coin
+     */
     render() {
 
         const { currentUser, currentUSD, currentCoin, coinsBought, coinsSold, price, changeH, changeD, changeW, coin, symbol, text, logo } = this.state;
-        if (currentUser == null) {
+
+        if (currentUser === null) {
             this.props.history.push("/login");
             window.location.reload();
+        }
+
+        if (coin === undefined) {
+            return (
+                <Container fluid>
+
+                    <Navbar className='z-100'>
+                        <Navbar.Brand href='./'><img src={Logo} alt='PaperCoin' /></Navbar.Brand>
+                    </Navbar>
+
+                    <Row className='main-content'>
+                        <Image src={PageNotFound} className='mx-auto my-auto'></Image>
+                    </Row>
+
+                </Container >
+            )
         }
 
         return (
@@ -231,7 +319,6 @@ export default class Coin extends React.Component {
                                 interval="5"
                                 timezone="Europe/Berlin"
                                 theme="Dark"
-                                style="1"
                                 locale="de_DE"
                                 toolbar_bg="#f1f3f6"
                                 hide_top_toolbar
@@ -242,12 +329,12 @@ export default class Coin extends React.Component {
                     <Col md='4' className='h-100 m-0 p-0 pr-2 pb-2 pl-2'>
                         <div className='h-27_5 rounded d-flex justify-content-center align-items-center' style={{ backgroundColor: '#131821', border: '2px solid grey' }}>
                             <div className='h-100 w-25 d-flex justify-content-center align-items-center'>
-                                <img src={logo} className='w-100 ml-2'></img>
+                                <img src={logo} alt='logo' className='w-100 ml-2'></img>
                             </div>
                             <div className='h-100 w-75 d-flex justify-content-center align-items-center'>
                                 <div className='w-95'>
-                                    <h5 className='text-center'>{coin.slice(0, 1).toUpperCase() + coin.slice(1)} <a className='text-secondary'>{symbol.toUpperCase()}</a></h5>
-                                    <a className='text-align-left'>{text}</a>
+                                    <h5 className='text-center'>{coin.slice(0, 1).toUpperCase() + coin.slice(1)} <span className='text-secondary'>{symbol.toUpperCase()}</span></h5>
+                                    <span className='text-align-left'>{text}</span>
                                 </div>
                             </div>
                         </div>

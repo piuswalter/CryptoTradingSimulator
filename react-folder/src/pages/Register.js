@@ -1,13 +1,20 @@
+// imports
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, ProgressBar, Alert } from 'react-bootstrap';
 import { AuthService } from '../services'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
-//Component Register
+// component Register
 export default class Register extends Component {
 
+    /**
+     * constructor of Register
+     * @param {*} props 
+     */
     constructor(props) {
+
         super(props);
+
         this.handleRegister = this.handleRegister.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -27,50 +34,55 @@ export default class Register extends Component {
             pwColor: "",
             currentUser: AuthService.getCurrentUser()
         };
+
     }
 
+    /**
+     * handles change in username-input
+     * @param {Event} e 
+     */
     onChangeUsername(e) {
 
-        // sets state.username, clears error message and provisionaly changes user input to valid
         this.setState({
             username: e.target.value,
             message: "",
             userInvalid: false
         });
 
-        // sets user input to invalid if password length < 5 or password length > 20
         if (5 > e.target.value.length || e.target.value.length > 20) {
             this.setState({ userInvalid: true })
         }
 
     }
 
+    /**
+     * handles changes in email-input
+     * @param {Event} e 
+     */
     onChangeEmail(e) {
-
-        // sets state.email, clears error message and changes email input to valid
         this.setState({
             email: e.target.value,
             message: "",
             emailInvalid: false
         });
-
     }
 
+    /**
+     * handles changes in password-input
+     * @param {Event} e 
+     */
     onChangePassword(e) {
 
-        // sets state.password, clears error message and provisionaly changes password input to valid
         this.setState({
             password: e.target.value,
             message: "",
             pwInvalid: false
         });
 
-        // sets password input to invalid if password length < 8
         if (8 > e.target.value.length || e.target.value.length > 20) {
             this.setState({ pwInvalid: true })
         }
 
-        // sets password strength bar depending on password length
         switch (e.target.value.length) {
             case 0: this.setState({ pwStrength: 0, pwColor: "danger" }); break;
             case 1: this.setState({ pwStrength: 6.25, pwColor: "danger" }); break;
@@ -94,9 +106,10 @@ export default class Register extends Component {
 
     }
 
-    // Function to login after registration
+    /**
+     * calls login after registration
+     */
     login() {
-
         setTimeout(() => {
             if (this.state.successful === true) {
                 AuthService.login(this.state.username, this.state.password)
@@ -110,21 +123,22 @@ export default class Register extends Component {
                         })
             }
         }, 1)
-
     }
 
+
+    /**
+     * handles register
+     * @param {Event} e
+     */
     handleRegister(e) {
 
-        // prevents the default behaviour of submit button
         e.preventDefault();
 
-        // clears error-message and disables submit button
         this.setState({
             message: "",
             loading: true
         });
 
-        // if instant submit without input: sets all inputs to invalid, enables submit button and ends function
         if (this.state.username === "" || this.state.email === "" || this.state.password === "") {
             this.setState({
                 userInvalid: !(this.state.username),
@@ -135,7 +149,6 @@ export default class Register extends Component {
             return
         }
 
-        // if one of the inputs is invalid: enables submit button and ends function
         if (this.state.userInvalid || this.state.emailInvalid || this.state.pwInvalid) {
             this.setState({
                 loading: false
@@ -143,7 +156,6 @@ export default class Register extends Component {
             return
         }
 
-        // Uses AuthService.register(): Either success or error
         AuthService.register(this.state.username, this.state.email, this.state.password)
             .then(
                 () => {
@@ -163,8 +175,9 @@ export default class Register extends Component {
             )
     }
 
-
-
+    /**
+     * render-function of Register
+     */
     render() {
         const { currentUser } = this.state;
 
