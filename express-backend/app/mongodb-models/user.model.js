@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Database format for each user
 const User = mongoose.model(
     "User",
     new mongoose.Schema({

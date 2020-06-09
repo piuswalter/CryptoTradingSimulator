@@ -1,6 +1,6 @@
-const { authJwt, exchange } = require("../app/middlewares");
-const controller = require("../app/controllers/user.controller");
+const { exchange } = require("../app/middlewares");
 
+// additional routes for exchange service
 module.exports = function(app) {
     app.use(function(req, res, next) {
         res.header(
@@ -9,10 +9,6 @@ module.exports = function(app) {
         );
         next();
     });
-
-    app.get("/data/test/all", controller.allAccess);
-
-    app.get("/data/test/user", [authJwt.verifyToken], controller.userBoard);
 
     app.get("/exchange", exchange.notDefined);
     app.get("/exchange/price", exchange.notDefined);
