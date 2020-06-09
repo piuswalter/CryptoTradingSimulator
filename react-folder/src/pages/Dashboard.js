@@ -187,7 +187,7 @@ export default class Dashboard extends React.Component {
 								<ListGroup variant='flush' className='h-88'>
 									<ListGroup.Item action href='/btc' className='h-9 text-light bg-dark'>
 										<div className='h5 d-inline'>01 </div>
-										<div className='d-inline'><img id='btc_logo' src={BTC_logo} className='w-10'></img></div>
+										<div className='d-inline'><img src={BTC_logo} className='w-10 h-100'></img></div>
 										<div className='h5 w-10 d-inline'> Bitcoin <a className='text-secondary'>BTC</a></div>
 										<div className='h5 d-inline float-right'>${prices.get('bitcoin')}</div>
 									</ListGroup.Item>
