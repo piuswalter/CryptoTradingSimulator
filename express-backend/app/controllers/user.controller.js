@@ -47,7 +47,11 @@ exports.verifyBalance = (req, res, next) => {
             }
             if (req.body.value > user.balance) {
                 return res.status(404).send({message: "Insufficient funds."});
-            } else {
+            }
+            if (req.body.value <= 0) {
+                return res.status(404).send({message: "Nice try :) "});
+            }
+            else {
                 next();
             }
         })
@@ -86,7 +90,11 @@ exports.verifyCoins = (req, res, next) => {
                     const coinBalance = userCoins[req.body.coin];
                     if (coinsSold > coinBalance) {
                         return res.status(404).send({message: "Insufficient funds."});
-                    } else {
+                    }
+                    if (req.body.value <= 0) {
+                        return res.status(404).send({message: "Ernsthaft??"});
+                    }
+                    else {
                         // Pass coinsSold to next middleware by adding to request object
                         req.coinsSold = coinsSold;
                         req.coinBalance = coinBalance;
