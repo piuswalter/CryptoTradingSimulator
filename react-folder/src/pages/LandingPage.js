@@ -1,17 +1,29 @@
+// imports
 import React from 'react';
-import { AuthService } from '../services'
 import { Container, Row, Col, Image, Button, Navbar } from 'react-bootstrap';
+import { AuthService } from '../services'
 import { Wave, Portfolio, Logo } from '../img'
 
-//Component LandingPage
+// component LandingPage
 export default class LandingPage extends React.Component {
+
+    /**
+     * constructor of LandingPage
+     * @param {*} props 
+     */
     constructor(props) {
+
         super(props);
+
         this.state = {
             currentUser: AuthService.getCurrentUser()
         };
+
     }
 
+    /**
+     * render-function of LandingPage
+     */
     render() {
         const { currentUser } = this.state;
 

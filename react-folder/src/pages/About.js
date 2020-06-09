@@ -1,27 +1,37 @@
+// imports
 import React from "react";
+import { Container, Row, Col, Button, Navbar, Nav } from 'react-bootstrap';
+import { UserService, AuthService } from '../services';
+import { Logo } from '../img';
 
-import AuthService from '../services/auth.service';
-import { UserService, ExchangeService } from '../services';
-import { PieChart } from 'react-minimal-pie-chart';
+// component About
+export default class About extends React.Component {
 
-// reactstrap components
-import { Container, Row, Col, Image, Button, Navbar, Nav, Form, ListGroup, Card, Overlay, Tooltip } from 'react-bootstrap';
-import { Logo, BTC_logo, ETH_logo, USDT_logo, XRP_logo, BCH_logo, BSV_logo, LTC_logo, BNB_logo, EOS_logo, XTZ_logo } from '../img';
-
-export default class Dashboard extends React.Component {
+    /**
+     * constructor of About
+     * @param {*} props 
+     */
     constructor(props) {
+
         super(props);
 
         this.state = {
             currentUser: AuthService.getCurrentUser(),
             message: ""
         };
+
     }
 
+    /**
+     * executes on mount
+     */
     componentDidMount() {
         this.getBalance();
     }
 
+    /**
+	 * gets user balance from backend
+	 */
     getBalance() {
         UserService.getUserBalance(this.state.currentUser.username).then(
             response => {
@@ -36,12 +46,19 @@ export default class Dashboard extends React.Component {
             })
     }
 
+    /**
+     * handles logout
+     * @param {Event} e 
+     */
     handleLogout(e) {
         e.preventDefault();
         AuthService.logout();
         window.location.reload();
     };
 
+    /**
+     * render-function of About
+     */
     render() {
         const { currentUser, currentUSD } = this.state;
 

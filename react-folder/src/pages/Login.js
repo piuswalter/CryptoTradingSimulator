@@ -1,13 +1,20 @@
+// imports
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert } from 'react-bootstrap';
 import { AuthService } from '../services'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
-//Component Login
+// component Login
 export default class Login extends Component {
 
+    /**
+     * constructor of Login
+     * @param {*} props 
+     */
     constructor(props) {
+
         super(props);
+
         this.handleLogin = this.handleLogin.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
@@ -21,8 +28,13 @@ export default class Login extends Component {
             pwInvalid: false,
             currentUser: AuthService.getCurrentUser()
         };
+
     }
 
+    /**
+     * handles change in username-input
+     * @param {Event} e 
+     */
     onChangeUsername(e) {
         this.setState({
             message: "",
@@ -31,6 +43,10 @@ export default class Login extends Component {
         });
     }
 
+    /**
+     * handles change in password-input
+     * @param {Event} e 
+     */
     onChangePassword(e) {
         this.setState({
             message: "",
@@ -39,7 +55,12 @@ export default class Login extends Component {
         });
     }
 
+    /**
+     * handles login
+     * @param {Event} e 
+     */
     handleLogin(e) {
+
         e.preventDefault();
 
         this.setState({
@@ -69,8 +90,12 @@ export default class Login extends Component {
                     message: resMessage
                 })
             })
+
     }
 
+    /**
+     * render-function of Login
+     */
     render() {
         const { currentUser } = this.state;
 
