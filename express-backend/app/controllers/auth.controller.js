@@ -1,6 +1,7 @@
 const config = require("../config/auth.config");
 const db = require("../mongodb-models");
 const User = db.user;
+const Logs = db.logs;
 
 
 const jwt = require("jsonwebtoken");
@@ -26,18 +27,37 @@ exports.register = (req, res) => {
         binancecoin: 0,
         tezos: 0
     });
-
     user.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
+            Logs.create({
+                username: req.body.username,
+                email: req.body.email,
+                time: Date(),
+                action: "Register",
+                status: err
+            });
             return;
         }
         user.save(err => {
             if (err) {
                 res.status(500).send({ message: err });
+                Logs.create({
+                    username: req.body.username,
+                    email: req.body.email,
+                    time: Date(),
+                    action: "Register",
+                    status: err
+                });
                 return;
             }
-
+            Logs.create({
+                username: req.body.username,
+                email: req.body.email,
+                time: Date(),
+                action: "Register",
+                status: "Successfull"
+            });
             res.send({ message: "User was registered successfully!" });
         });
     });
@@ -51,10 +71,24 @@ exports.login = (req, res) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({ message: err });
+                Logs.create({
+                    username: req.body.username,
+                    email: req.body.email,
+                    time: Date(),
+                    action: "Login",
+                    status: err
+                });
                 return;
             }
 
             if (!user) {
+                Logs.create({
+                    username: req.body.username,
+                    email: req.body.email,
+                    time: Date(),
+                    action: "Login",
+                    status: "User not found"
+                });
                 return res.status(404).send({ message: "User Not found." });
             }
 
@@ -64,6 +98,13 @@ exports.login = (req, res) => {
             );
 
             if (!passwordIsValid) {
+                Logs.create({
+                    username: req.body.username,
+                    email: req.body.email,
+                    time: Date(),
+                    action: "Login",
+                    status: "Invalid password"
+                });
                 return res.status(401).send({
                     accessToken: null,
                     message: "Invalid Password!"
@@ -72,6 +113,13 @@ exports.login = (req, res) => {
 
             var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400 // 24 hours
+            });
+            Logs.create({
+                username: req.body.username,
+                email: req.body.email,
+                time: Date(),
+                action: "Login",
+                status: "Successfull. Token: " + token
             });
             res.status(200).send({
                 id: user._id,

@@ -1,5 +1,6 @@
 const db = require("../mongodb-models");
 const User = db.user;
+const Logs = db.logs;
 const exchange = require("../middlewares/exchange");
 
 // Receives username from frontend and returns complete portfolio
@@ -10,13 +11,38 @@ exports.getUserBalance = (req, res) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({message: err});
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Get user balance",
+                    status: err
+                });
                 return;
             }
 
             if (!user) {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Get user balance",
+                    status: "User not found"
+                });
                 return res.status(404).send({message: "User Not found."});
             }
-            res.status(200).send({
+            /**
+            Logs.create({
+                username: req.body.username,
+                email: "not provided",
+                time: Date(),
+                action: "Get user balance",
+                status: "Successful"
+            });
+            */
+            // console.log("test");
+
+            return res.status(200).send({
                 username: user.username,
                 balance: user.balance,
                 bitcoin: user.bitcoin,
@@ -43,15 +69,43 @@ exports.verifyBalance = (req, res, next) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({message: err});
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Verify balance",
+                    status: err
+                });
                 return;
             }
             if (req.body.value > user.balance) {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Verify balance",
+                    status: "Insufficient funds"
+                });
                 return res.status(404).send({message: "Insufficient funds."});
             }
             if (req.body.value <= 0) {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Verify balance",
+                    status: "Negative value"
+                });
                 return res.status(404).send({message: "Nice try :) "});
             }
             else {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Verify balance",
+                    status: "Successful"
+                });
                 next();
             }
         })
@@ -65,6 +119,13 @@ exports.verifyCoins = (req, res, next) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({message: err});
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Verify coin balance",
+                    status: err
+                });
                 return;
             }
 
@@ -89,15 +150,36 @@ exports.verifyCoins = (req, res, next) => {
                     const coinsSold = parseFloat(req.body.value) / parseFloat(response.data[0].price_usd);
                     const coinBalance = userCoins[req.body.coin];
                     if (coinsSold > coinBalance) {
+                        Logs.create({
+                            username: req.body.username,
+                            email: "not provided",
+                            time: Date(),
+                            action: "Verify coin balance",
+                            status: "Insufficient funds"
+                        });
                         return res.status(404).send({message: "Insufficient funds."});
                     }
                     if (req.body.value <= 0) {
+                        Logs.create({
+                            username: req.body.username,
+                            email: "not provided",
+                            time: Date(),
+                            action: "Verify coin balance",
+                            status: "Negative value"
+                        });
                         return res.status(404).send({message: "Ernsthaft??"});
                     }
                     else {
                         // Pass coinsSold to next middleware by adding to request object
                         req.coinsSold = coinsSold;
                         req.coinBalance = coinBalance;
+                        Logs.create({
+                            username: req.body.username,
+                            email: "not provided",
+                            time: Date(),
+                            action: "Verify coin balance",
+                            status: "Successful"
+                        });
                         next();
                     }
                 })
@@ -129,13 +211,33 @@ exports.buy = (req, res) => {
                 .exec((err, user) => {
                     if (err) {
                         res.status(500).send({message: err});
+                        Logs.create({
+                            username: req.body.username,
+                            email: "not provided",
+                            time: Date(),
+                            action: "Buy",
+                            status: err
+                        });
                         return;
                     }
 
                     if (!user) {
+                        Logs.create({
+                            username: req.body.username,
+                            email: "not provided",
+                            time: Date(),
+                            action: "Buy",
+                            status: "User not found"
+                        });
                         return res.status(404).send({message: "User Not found."});
                     }
-
+                    Logs.create({
+                        username: req.body.username,
+                        email: "not provided",
+                        time: Date(),
+                        action: "Buy",
+                        status: "Successful. Bought: " + coinsBought + " of " + coin
+                    });
                     res.status(200).send({
                         balance: user.balance-req.body.value,
                         coinsBought: coinsBought
@@ -163,13 +265,33 @@ exports.sell = (req, res) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({message: err});
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Sell",
+                    status: err
+                });
                 return;
             }
 
             if (!user) {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Sell",
+                    status: "User not found"
+                });
                 return res.status(404).send({message: "User Not found."});
             }
-
+            Logs.create({
+                username: req.body.username,
+                email: "not provided",
+                time: Date(),
+                action: "Sell",
+                status: "Successful. Sold " + coinsSold + " of " + req.body.coin
+            });
             res.status(200).send({
                 balance: user.balance+parseInt(req.body.value),
                 newCoinBalance: req.coinBalance-coinsSold,
@@ -187,10 +309,24 @@ exports.getUserValue = (req, res) => {
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({message: err});
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Get user value",
+                    status: err
+                });
                 return;
             }
 
             if (!user) {
+                Logs.create({
+                    username: req.body.username,
+                    email: "not provided",
+                    time: Date(),
+                    action: "Get user value",
+                    status: "User not found"
+                });
                 return res.status(404).send({message: "User Not found."});
             }
 
@@ -259,6 +395,13 @@ exports.getUserValue = (req, res) => {
                 })
                 .then((response) => {
                     userValue = userValue + userCoins.tezos * response.data[0].price_usd;
+                    Logs.create({
+                        username: req.body.username,
+                        email: "not provided",
+                        time: Date(),
+                        action: "Get user value",
+                        status: "Successful. User value: " + userValue
+                    });
                     res.status(200).send({
                         username: user.username,
                         balance: user.balance,
