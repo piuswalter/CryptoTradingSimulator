@@ -1,4 +1,4 @@
-# Crypto Trading Simulator
+# PaperCoin - Crypto Trading Simulator
 
 ## Available folders
 
