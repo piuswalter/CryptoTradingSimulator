@@ -23,18 +23,18 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "http-errors": "^1.6.3",
+    "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongod": "^2.0.0",
-    "mongodb": "^3.5.7",
-    "mongodb-memory-server-core": "^6.6.0",
+    "mongodb": "^3.6.3",
+    "mongodb-memory-server-core": "^6.9.2",
     "mongodb-server": "^1.0.0",
-    "mongoose": "^5.9.15",
+    "mongoose": "^5.11.10",
     "morgan": "~1.9.1",
     "pug": "^2.0.4"
   },
   "devDependencies": {
-    "jest": "^26.0.1",
+    "jest": "^26.6.3",
     "supertest": "^4.0.2"
   }
 }
