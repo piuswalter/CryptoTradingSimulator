@@ -12,7 +12,7 @@ Open [http://localhost:8080/](http://localhost:8080/) to view it in the browser.
 ### `frontend`
 
 This folder contains the entire React frontend<br />
-Open [http://localhost/](http://localhost/) to view it in the browser.
+Open [http://localhost:3000/](http://localhost:3000/) to view it in the browser.
 
 ### `mongodata`
 
