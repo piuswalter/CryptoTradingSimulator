@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="#"><img src="https://raw.githubusercontent.com/piuswalter/CryptoTradingSimulator/master/frontend/src/img/logo.svg" alt="PaperCoin" width="300"></a>
+    <a href="#"><img src="https://raw.githubusercontent.com/piuswalter/CryptoTradingSimulator/master/logo-dark.svg" alt="PaperCoin" width="300"></a>
     <br />
     <br />
     <p>Crypto Trading Simulator</p>
