@@ -55,8 +55,8 @@ To start PaperCoin, you need to run the following commands in the three director
 
 ### Default application links
 
-- The backend ist running on [localhost:8080](http://localhost:8080/).
-- The frontend ist running on [localhost:3000](http://localhost:3000/).
+- The backend ist running on [localhost:8080](http://localhost:8080/)
+- The frontend ist running on [localhost:3000](http://localhost:3000/)
 
 ## ⚙️ Built with MERN stack
 
