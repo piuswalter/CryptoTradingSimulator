@@ -18,13 +18,13 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/piuswalter/CryptoTradingSimulator)
 ![Lines of code](https://img.shields.io/tokei/lines/github/piuswalter/CryptoTradingSimulator)
 
-The aim of this web application is to deliver an authentic cryptocurrency trading experience. We strive to enable our users to engage in a <span style="color: #2896f3;">realistic and risk free trading environment</span> which is synced to the latest exchange rates.
+The aim of this web application is to deliver an authentic cryptocurrency trading experience. We strive to enable our users to engage in a realistic and risk free trading environment which is synced to the latest exchange rates.
 
-Please note that this is a <span style="color: #2896f3;">prototype</span>, which means certain processes are yet to be optimised. Nevertheless, we are proud to present a <span style="color: #2896f3;">fully functional papertrading experience</span> with more than 10 supported currencies - and more to come.
+Please note that this is a prototype, which means certain processes are yet to be optimised. Nevertheless, we are proud to present a fully functional papertrading experience with more than 10 supported currencies - and more to come.
 
 ## 💰 How it works
 
-Users will receive their initial start-off funds of <span style="color: #2896f3;">10,000 dollars</span> right after registration. From thereon you are free to invest in our supported cryptocurrencies by selling or buying at your leisure. Strategic decisions are supported by our individual trading charts and exchange history. By practising with our simulation, you are able to gain vital knowledge and try out your own strategy first-hand, before even investing a cent of real money.
+Users will receive their initial start-off funds of 10,000 dollars right after registration. From thereon you are free to invest in our supported cryptocurrencies by selling or buying at your leisure. Strategic decisions are supported by our individual trading charts and exchange history. By practising with our simulation, you are able to gain vital knowledge and try out your own strategy first-hand, before even investing a cent of real money.
 
 ## ⚒️ Setup your own PaperCoin instance
 
