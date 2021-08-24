@@ -32,9 +32,5 @@
     "mongoose": "^5.12.13",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"
-  },
-  "devDependencies": {
-    "jest": "^27.0.4",
-    "supertest": "^6.1.3"
   }
 }
