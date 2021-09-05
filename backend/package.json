@@ -29,7 +29,7 @@
     "mongodb": "^4.1.0",
     "mongodb-memory-server-core": "^7.3.6",
     "mongodb-server": "^1.0.0",
-    "mongoose": "^5.13.8",
+    "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"
   }
