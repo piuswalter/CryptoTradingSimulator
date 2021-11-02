@@ -37,6 +37,6 @@
   "proxy": "http://localhost:8080",
   "devDependencies": {
     "react-validation": "^3.0.7",
-    "validator": "^13.6.0"
+    "validator": "^13.7.0"
   }
 }
