@@ -27,7 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongod": "^2.0.0",
     "mongodb": "^4.2.0",
-    "mongodb-memory-server-core": "^8.0.2",
+    "mongodb-memory-server-core": "^8.0.3",
     "mongodb-server": "^1.0.0",
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
