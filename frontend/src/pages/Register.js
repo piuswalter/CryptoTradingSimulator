@@ -1,6 +1,6 @@
 // imports
 import React, { Component } from 'react';
-import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, ProgressBar, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Form, Nav, ProgressBar, Alert } from 'react-bootstrap';
 import { AuthService } from '../services'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
@@ -199,16 +199,16 @@ export default class Register extends Component {
                         <Image src={Portfolio} className='mx-auto my-auto h-60' fluid></Image>
                     </Col>
                     <Col className='d-flex'>
-                        <Jumbotron className='mx-auto my-auto w-75 d-inline'>
+                        <div className='mx-auto my-auto w-75 d-inline jumbotron'>
                             <div className='d-flex justify-content-center mb-3'><Image src={Avatar} className='w-25'></Image></div>
                             <h1 className='text-center text-dark'>Welcome</h1>
                             <Form className='text-center' onSubmit={this.handleRegister}>
 
-                                <Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Control type="text" placeholder="Username" onChange={this.onChangeUsername} isInvalid={this.state.userInvalid} />
                                     <Nav.Link disabled>Must be between 5 and 20 characters</Nav.Link>
                                 </Form.Group>
-                                <Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Control type="email" placeholder="Email" onChange={this.onChangeEmail} isInvalid={this.state.emailInvalid} />
                                 </Form.Group>
                                 <Form.Group>
@@ -226,7 +226,7 @@ export default class Register extends Component {
                                     </Nav.Item>
                                 </Nav>
                             </Form>
-                        </Jumbotron>
+                        </div>
                     </Col>
                 </Row>
 
