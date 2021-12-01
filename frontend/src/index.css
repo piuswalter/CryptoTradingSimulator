@@ -103,3 +103,10 @@ body {
 .z-100 {
   z-index: 100;
 }
+
+.jumbotron {
+  padding: 4rem 2rem;
+  margin-bottom: 2rem;
+  background-color: #e9ecef;
+  border-radius: .3rem;
+}

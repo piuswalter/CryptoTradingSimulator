@@ -1,6 +1,6 @@
 // imports
 import React, { Component } from 'react';
-import { Container, Row, Col, Image, Button, Navbar, Form, Jumbotron, Nav, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Navbar, Form, Nav, Alert } from 'react-bootstrap';
 import { AuthService } from '../services'
 import { Wave, Portfolio, Logo, Avatar } from '../img'
 
@@ -117,15 +117,15 @@ export default class Login extends Component {
                         <Image src={Portfolio} className='mx-auto my-auto h-60' fluid></Image>
                     </Col>
                     <Col className='d-flex'>
-                        <Jumbotron className='mx-auto my-auto w-75 d-inline'>
+                        <div className='mx-auto my-auto w-75 d-inline jumbotron'>
                             <div className='d-flex justify-content-center mb-3'><Image src={Avatar} className='w-25'></Image></div>
                             <h1 className='text-center text-dark'>Welcome</h1>
                             <Form className='text-center' onSubmit={this.handleLogin}>
 
-                                <Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Control type="text" placeholder="Username" onChange={this.onChangeUsername} isInvalid={this.state.userInvalid} />
                                 </Form.Group>
-                                <Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Control type="password" placeholder="Password" onChange={this.onChangePassword} isInvalid={this.state.pwInvalid} />
                                 </Form.Group>
                                 <Alert variant='danger' show={this.state.message}>{this.state.message}</Alert>
@@ -140,7 +140,7 @@ export default class Login extends Component {
                                 </Nav>
 
                             </Form>
-                        </Jumbotron>
+                        </div>
                     </Col>
                 </Row>
 
