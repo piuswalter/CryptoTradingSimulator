@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;400&display=swap");
 
 body {
   margin: 0;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,11 +86,11 @@ body {
 }
 
 .bg-green {
-  background-color: #28A745 !important;
+  background-color: #28a745 !important;
 }
 
 .bg-red {
-  background-color: #EF534F !important;
+  background-color: #ef534f !important;
 }
 
 .main-content {
@@ -108,5 +108,5 @@ body {
   padding: 4rem 2rem;
   margin-bottom: 2rem;
   background-color: #e9ecef;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
